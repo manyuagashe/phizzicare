@@ -1,27 +1,6 @@
 import axios from 'axios';
 import { AxiosResponse } from 'axios';
-
-interface Exercise {
-  id: number;
-  name: string;
-  videoLink: string;
-  instructions: string;
-  completed: boolean;
-}
-
-interface User {
-  id: number;
-  image: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  height: number;
-  weight: number;
-  currentStreak: number;
-  longestStreak: number;
-  exercises: Exercise[];
-  history: Exercise[];
-}
+import { User, Exercise } from './types';
 
 const api = axios.create({
   baseURL: 'http://localhost:3000',
