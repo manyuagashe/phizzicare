@@ -24,7 +24,7 @@ export default function ProfileView() {
             email: USE API
           </ThemedText>
           <ThemedText style={styles.infoText}>
-            BioInfo: USE API
+            BioInfo: USE APi
           </ThemedText>
 
           <ThemedView style={styles.flexRow}>
@@ -72,4 +72,4 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     marginHorizontal: 4,
   },
-});
+}); 
