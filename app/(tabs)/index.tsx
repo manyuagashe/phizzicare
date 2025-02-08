@@ -1,74 +1,47 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { motion } from "framer-motion";
+import { ExerciseCard } from "@/components/ExerciseCard";
+import { NavigationBar } from "@/components/NavigationBar";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const exercises = [
+  { title: "Morning Yoga", duration: "20 min", intensity: "Easy" as const },
+  { title: "HIIT Workout", duration: "30 min", intensity: "Hard" as const },
+  { title: "Evening Stretch", duration: "15 min", intensity: "Medium" as const },
+];
 
-export default function HomeScreen() {
+const Index = () => {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <div className="min-h-screen bg-gradient-to-b from-mint-light to-white pb-20">
+      <div className="max-w-lg mx-auto px-4 py-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-4 mb-6 border border-mint/10">
+            <h2 className="text-sm font-medium text-gray-500 mb-1">Current Streak</h2>
+            <div className="text-3xl font-bold text-gray-800">7 Days</div>
+          </div>
+          
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Today's Exercises</h1>
+          <p className="text-gray-500 mb-6">Complete these exercises to maintain your streak!</p>
+          
+          <div className="space-y-3">
+            {exercises.map((exercise, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <ExerciseCard {...exercise} />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+      <NavigationBar />
+    </div>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+export default Index;
