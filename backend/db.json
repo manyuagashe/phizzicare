@@ -2,6 +2,7 @@
   "users": [
     {
       "id": "1",
+      "image": "https://t4.ftcdn.net/jpg/10/57/03/35/360_F_1057033547_anWbRWhpm6b8mpiM3OuT3RXCxHUOUUwt.webp",
       "firstName": "John",
       "lastName": "Doe",
       "email": "john.doe@example.com",
@@ -30,6 +31,7 @@
       "id": "2",
       "firstName": "Jane",
       "lastName": "Smith",
+      "image": "https://t4.ftcdn.net/jpg/10/57/03/35/360_F_1057033547_anWbRWhpm6b8mpiM3OuT3RXCxHUOUUwt.webp",
       "email": "jane.smith@example.com",
       "height": 160,
       "weight": 55,
