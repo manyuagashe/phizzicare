@@ -5,6 +5,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { Slot } from "expo-router";
+
+// Import your global CSS file
+import "../constants/global.css";
+export default Slot;
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
