@@ -71,4 +71,4 @@ async function get_history(user_id: number): Promise<Exercise[]> {
   return user.history;
 }
 
-export { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed };
+export { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history };
