@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "height": 175,
+      "weight": 70,
+      "currentStreak": 5,
+      "longestStreak": 10,
+      "exercises": [
+        {
+          "id": 1,
+          "name": "Squats",
+          "videoLink": "",
+          "instructions": "Stand with feet a little wider than shoulder-width apart, hips stacked over knees, and knees over ankles.",
+          "completed": true
+        },
+        {
+          "id": 2,
+          "name": "Lunges",
+          "videoLink": "",
+          "instructions": "Start by standing up tall. Step forward with one foot until your leg reaches a 90-degree angle.",
+          "completed": false
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane.smith@example.com",
+      "height": 160,
+      "weight": 55,
+      "currentStreak": 3,
+      "longestStreak": 7,
+      "exercises": [
+        {
+          "id": 3,
+          "name": "Push-ups",
+          "videoLink": "",
+          "instructions": "Start in a plank position. Lower your body until your chest nearly touches the floor.",
+          "completed": false
+        },
+        {
+          "id": 4,
+          "name": "Plank",
+          "videoLink": "",
+          "instructions": "Lie face down with forearms on the floor and hands clasped. Extend the legs behind the body and rise up on the toes.",
+          "completed": false
+        }
+      ]
+    }
+  ]
+}
