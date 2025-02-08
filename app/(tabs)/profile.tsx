@@ -4,37 +4,35 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+//import { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history } from '@/backend/routes.ts'
 
 export default function ProfileView() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      >
+      headerImage={<Image source={{ uri: 'https://source.unsplash.com/800x600/?water' }} style={{ width: '100%', height: 200 }} />}
+    >
       <ThemedView style={styles.titleContainer}>
-        <ThemedView /* VBox for all the items on homepage*/className = "flex grow flex-col">
-          <ThemedText className = "flex font-red-500 flex-max place-content-center text-4xl py-9">
+        <ThemedView style={styles.flexCol}>
+          <ThemedText style={styles.titleText}>
             Megan Taylor
           </ThemedText>
-          <ThemedText className="py-5">
+          <ThemedText style={styles.infoText}>
             username: USE API
           </ThemedText>
-          <ThemedText className="py-5">
+          <ThemedText style={styles.infoText}>
             email: USE API
           </ThemedText>
-          <ThemedText className="py-5">
+          <ThemedText style={styles.infoText}>
             BioInfo: USE API
           </ThemedText>
 
-          <ThemedView className="flex-row mt-20">
-            <ThemedText /*bottom bar goes below this one*/
-              className = "flex grow place-content-center rounded-full bg-teal-500 border-teal-500 border flex-max py-2 mx-1"
-            >
+          <ThemedView style={styles.flexRow}>
+            <ThemedText style={styles.streakText}>
               Streak: Use API
             </ThemedText>
-            <ThemedText /*bottom bar goes below this one*/
-              className = "flex grow place-content-center rounded-full bg-teal-500 border-teal-500 border flex-max py-2 mx-1"
-            >
-              Max Streak: Use API
+            <ThemedText style={styles.streakText}>
+              Max Streak: Use 
             </ThemedText>
           </ThemedView>
         </ThemedView>
@@ -45,19 +43,33 @@ export default function ProfileView() {
 
 const styles = StyleSheet.create({
   titleContainer: {
+    padding: 20,
+  },
+  flexCol: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  titleText: {
+    color: '#ffffff',
+    textAlign: 'center',
+    fontSize: 32,
+    paddingVertical: 36,
+  },
+  infoText: {
+    paddingVertical: 20,
+  },
+  flexRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    marginTop: 80,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  streakText: {
+    flex: 1,
+    textAlign: 'center',
+    borderRadius: 9999,
+    backgroundColor: '#38b2ac',
+    borderColor: '#38b2ac',
+    borderWidth: 1,
+    paddingVertical: 8,
+    marginHorizontal: 4,
   },
 });
