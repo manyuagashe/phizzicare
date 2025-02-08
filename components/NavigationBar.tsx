@@ -1,35 +1,72 @@
-import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Home, History, User } from "lucide-react";
-import { usePathname } from 'expo-router';
+import { Link, usePathname } from 'expo-router';
+import { View, Text, Pressable } from 'react-native';
+import { Home, History, User } from 'lucide-react';
 
+type Route = {
+  pathname: "/" | "/history" | "/profile";
+  icon: typeof Home;
+  label: string;
+};
+
+const routes: Route[] = [
+  { pathname: "/", icon: Home, label: "Home" },
+  { pathname: "/history", icon: History, label: "History" },
+  { pathname: "/profile", icon: User, label: "Profile" }
+];
 
 export const NavigationBar = () => {
+  const pathname = usePathname();
 
-    const pathname = usePathname();
-    
-    const isActive = (path: string) => pathname === path;
-  
-  const NavItem = ({ to, icon: Icon, label }: { to: string; icon: typeof Home; label: string }) => (
-    <Link to={to} className="flex-1">
-      <motion.div
-        whileTap={{ scale: 0.95 }}
-        className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-colors
-          ${isActive(to) ? "text-mint" : "text-gray-500 hover:text-gray-700"}`}
-      >
-        <Icon className="w-6 h-6" />
-        <span className="text-xs font-medium">{label}</span>
-      </motion.div>
+  const isActive = (path: string) => pathname === path;
+
+  const NavItem = ({ pathname, icon: Icon, label }: Route) => (
+    <Link href={pathname}>
+      <Pressable style={{ flex: 1 }}>
+        <View style={{
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: 8,
+          gap: 4,
+        }}>
+          <Icon
+            size={24}
+            color={isActive(pathname) ? '#4ade80' : '#6b7280'}
+          />
+          <Text style={{
+            fontSize: 12,
+            fontWeight: '500',
+            color: isActive(pathname) ? '#4ade80' : '#6b7280'
+          }}>
+            {label}
+          </Text>
+        </View>
+      </Pressable>
     </Link>
   );
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-gray-200">
-      <nav className="max-w-lg mx-auto px-6 py-2 flex items-center justify-around">
-        <NavItem to="/" icon={Home} label="Home" />
-        <NavItem to="/history" icon={History} label="History" />
-        <NavItem to="/profile" icon={User} label="Profile" />
-      </nav>
-    </div>
+    <View style={{
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      borderTopWidth: 1,
+      borderTopColor: '#e5e7eb',
+    }}>
+      <View style={{
+        maxWidth: 512,
+        marginHorizontal: 'auto',
+        paddingHorizontal: 24,
+        paddingVertical: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+      }}>
+        {routes.map((route) => (
+          <NavItem key={route.pathname} {...route} />
+        ))}
+      </View>
+    </View>
   );
 };
