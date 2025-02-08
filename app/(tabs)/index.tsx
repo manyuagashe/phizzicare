@@ -1,6 +1,8 @@
-import { motion } from "framer-motion";
-import { ExerciseCard } from "@/components/ExerciseCard";
-import { NavigationBar } from "@/components/NavigationBar";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { motion } from 'framer-motion';
+import { ExerciseCard } from '@/components/ExerciseCard';
+import { NavigationBar } from '@/components/NavigationBar';
 
 const exercises = [
   { title: "Morning Yoga", duration: "20 min", intensity: "Easy" as const },
@@ -10,22 +12,22 @@ const exercises = [
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-mint-light to-white pb-20">
-      <div className="max-w-lg mx-auto px-4 py-6">
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          style={styles.motionContainer}
         >
-          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-4 mb-6 border border-mint/10">
-            <h2 className="text-sm font-medium text-gray-500 mb-1">Current Streak</h2>
-            <div className="text-3xl font-bold text-gray-800">7 Days</div>
-          </div>
-          
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Today's Exercises</h1>
-          <p className="text-gray-500 mb-6">Complete these exercises to maintain your streak!</p>
-          
-          <div className="space-y-3">
+          <View style={styles.streakContainer}>
+            <Text style={styles.streakLabel}>Current Streak</Text>
+            <Text style={styles.streakValue}>7 Days</Text>
+          </View>
+
+          <Text style={styles.header}>Today's Exercises</Text>
+          <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
+
+          <View style={styles.exerciseList}>
             {exercises.map((exercise, index) => (
               <motion.div
                 key={index}
@@ -36,12 +38,63 @@ const Index = () => {
                 <ExerciseCard {...exercise} />
               </motion.div>
             ))}
-          </div>
+          </View>
         </motion.div>
-      </div>
+      </ScrollView>
       <NavigationBar />
-    </div>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F0FFF4', // mint-light
+    paddingBottom: 20,
+  },
+  scrollContainer: {
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 24,
+  },
+  motionContainer: {
+    width: '100%',
+    maxWidth: 400,
+  },
+  streakContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backdropFilter: 'blur(10px)', // React Native does not support backdrop-blur directly, you may need a library for this effect
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#A7F3D0', // mint/10
+  },
+  streakLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#6B7280', // gray-500
+    marginBottom: 4,
+  },
+  streakValue: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#1F2937', // gray-800
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1F2937', // gray-800
+    marginBottom: 8,
+  },
+  subheader: {
+    fontSize: 14,
+    color: '#6B7280', // gray-500
+    marginBottom: 16,
+  },
+  exerciseList: {
+    width: '100%',
+  },
+});
 
 export default Index;
