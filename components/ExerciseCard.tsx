@@ -28,7 +28,7 @@ export const ExerciseCard = ({ title, duration = "30 min", intensity = "Medium",
           </View>
         </View>
         <View style={styles.iconContainer}>
-          <Text style={styles.icon}>{'>'}</Text>
+          <Text style={[styles.icon, styles.iconContainer]}>{'>'}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -41,14 +41,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 }, // Increased shadow offset height
+    shadowOpacity: 0.2, // Increased shadow opacity
+    shadowRadius: 12, // Increased shadow radius
     borderColor: '#E0F7FA',
     borderWidth: 1,
     overflow: 'hidden',
     cursor: 'pointer',
-    
+    marginVertical: 8, // Reduced margin above and below the card
   },
   content: {
     padding: 16,
@@ -95,10 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
   },
-  iconContainer: {
-    color: '#00796B',
-    transition: 'color 0.2s',
-  },
+  iconContainer: {},
   icon: {
     fontSize: 24,
   },
