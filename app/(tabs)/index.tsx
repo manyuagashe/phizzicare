@@ -1,47 +1,100 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { motion } from 'framer-motion';
+import { ExerciseCard } from '@/components/ExerciseCard';
+import { NavigationBar } from '@/components/NavigationBar';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const exercises = [
+  { title: "Morning Yoga", duration: "20 min", intensity: "Easy" as const },
+  { title: "HIIT Workout", duration: "30 min", intensity: "Hard" as const },
+  { title: "Evening Stretch", duration: "15 min", intensity: "Medium" as const },
+];
 
-export default function HomeScreen() {
+const Index = () => {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText className = "font-red-500 border-red-500 border">
-          Megan Taylor
-        </ThemedText>
-        <ThemedText>
-          username:
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={styles.motionContainer}
+        >
+          <View style={styles.streakContainer}>
+            <Text style={styles.streakLabel}>Current Streak</Text>
+            <Text style={styles.streakValue}>7 Days</Text>
+          </View>
+
+          <Text style={styles.header}>Today's Exercises</Text>
+          <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
+
+          <View style={styles.exerciseList}>
+            {exercises.map((exercise, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <ExerciseCard {...exercise} />
+              </motion.div>
+            ))}
+          </View>
+        </motion.div>
+      </ScrollView>
+      <NavigationBar />
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: '#F0FFF4', // mint-light
+    paddingBottom: 20,
   },
-  stepContainer: {
-    gap: 8,
+  scrollContainer: {
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 24,
+  },
+  motionContainer: {
+    width: '100%',
+    maxWidth: 400,
+  },
+  streakContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backdropFilter: 'blur(10px)', // React Native does not support backdrop-blur directly, you may need a library for this effect
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#A7F3D0', // mint/10
+  },
+  streakLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#6B7280', // gray-500
+    marginBottom: 4,
+  },
+  streakValue: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#1F2937', // gray-800
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1F2937', // gray-800
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  subheader: {
+    fontSize: 14,
+    color: '#6B7280', // gray-500
+    marginBottom: 16,
+  },
+  exerciseList: {
+    width: '100%',
   },
 });
+
+export default Index;
