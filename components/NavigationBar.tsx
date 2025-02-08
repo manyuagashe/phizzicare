@@ -1,12 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Home, History, User } from "lucide-react";
+import { usePathname } from 'expo-router';
+
 
 export const NavigationBar = () => {
-  const location = useLocation();
 
-  const isActive = (path: string) => location.pathname === path;
-
+    const pathname = usePathname();
+    
+    const isActive = (path: string) => pathname === path;
+  
   const NavItem = ({ to, icon: Icon, label }: { to: string; icon: typeof Home; label: string }) => (
     <Link to={to} className="flex-1">
       <motion.div
