@@ -14,7 +14,7 @@ const defaultExercise: Exercise = {
   id: 0,
   videoLink: "",
   title: "Exercise",
-  reps: "10 reps",
+  duration: "10",
   intensity: "Medium",
   completed: false,
   instructions: "Do the exercise",
@@ -41,7 +41,7 @@ export const ExerciseCard = ({
         <View style={styles.textContainer}>
           <Text style={styles.title}>{exercise.title}</Text>
           <View style={styles.infoContainer}>
-            <Text style={styles.reps}>{exercise.reps}</Text>
+            <Text style={styles.duration}><Text style={{ marginRight: 3}}>x</Text>{exercise.duration}</Text>
             <View
               style={[
                 styles.intensity,
@@ -62,9 +62,9 @@ export const ExerciseCard = ({
               <View style={styles.status}>
                 {setExercises !== undefined ? (
                   exercise.completed ? (
-                    <CircleCheck size={24} color="#4ade80" />
+                  <CircleCheck size={24} color="#4ade80" />
                   ) : (
-                    <CircleAlert size={24} color="#ff4040" />
+                  <CircleAlert size={24} color="#FFD700" />
                   )
                 ) : null}
               </View>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
   },
-  reps: {
+  duration: {
     fontSize: 14,
     color: "#757575",
   },
