@@ -88,54 +88,36 @@ export default function ProfileView() {
               </View>
                </View>
 
-
-
-
-               <View style={styles.streakBox}>
-    <Text style={styles.streakLabel}>Current Streak</Text>
-    <Text style={styles.streakValue}>
-      {CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."} Days
-    </Text>
-  </View>
-  
-  <View style={styles.streakBox}>
-    <Text style={styles.streakLabel}>Best Streak</Text>
-    <Text style={styles.streakValue}>
-      {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} Days
-    </Text>
-  </View>
-
   {/* New Progress Box for Therapy Progress */}
-  <View style={styles.streakBox}>
-    <Text style={styles.streakLabel}>Recovery Progress</Text>
+  <View style={[styles.streakBox, styles.progressBox]}>
+              <Text style={styles.streakLabel}>Recovery Progress</Text>
 
-    {/* Progress Bar Container */}
-    <View style={{ position: 'relative', width: '100%', height: 20, marginTop: 8 }}>
-      {/* Progress Bar Background */}
-      <View style={{ width: '100%', height: 10, backgroundColor: '#D1FAE5', borderRadius: 5, overflow: 'hidden' }}>
-        {/* Filled Progress */}
-        <View style={{ width: `${(5 / 12) * 100}%`, height: '100%', backgroundColor: '#10B981' }} />
-      </View>
+              {/* Progress Bar Container */}
+              <View style={{ position: 'relative', width: '100%', height: 20, marginTop: 8 }}>
+                {/* Progress Bar Background */}
+                <View style={{ width: '100%', height: 10, backgroundColor: '#D1FAE5', borderRadius: 5, overflow: 'hidden' }}>
+                  {/* Filled Progress */}
+                  <View style={{ width: `${(5 / 12) * 100}%`, height: '100%', backgroundColor: '#10B981' }} />
+                </View>
 
-      {/* Smiley Face Indicator */}
-      <Text 
-        style={{
-          position: 'absolute',
-          top: -5, // Adjust to center vertically
-          left: `${(5 / 12) * 100}%`, // Moves based on progress
-          transform: [{ translateX: -10 }], // Center the emoji
-          fontSize: 18
-        }}
-      >
-        😊
-      </Text>
-    </View>
+                {/* Smiley Face Indicator */}
+                <Text 
+                  style={{
+                    position: 'absolute',
+                    top: -5, // Adjust to center vertically
+                    left: `${(5 / 12) * 100}%`, // Moves based on progress
+                    transform: [{ translateX: -10 }], // Center the emoji
+                    fontSize: 18
+                  }}
+                >
+                  😊
+                </Text>
+              </View>
 
-    <Text style={{ fontSize: 14, color: '#1F2937', marginTop: 4 }}>
-      5 / 12 months completed
-    </Text>
-  </View>
-
+              <Text style={{ fontSize: 14, color: '#1F2937', marginTop: 4 }}>
+                5 / 12 months completed
+              </Text>
+            </View>
 
 
 
@@ -238,6 +220,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     marginBottom: 24,
+  },
+  progressBox: {
+    width: '100%',
+    marginTop: 16,
   },
   streakLabel: {
     fontSize: 12,
