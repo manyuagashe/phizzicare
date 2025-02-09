@@ -26,7 +26,7 @@ export default function TopBar() {
       setUser(user);
     };
     fetchUser();
-  }, []);
+  }, [streakActive]);
 
   const Logo = () => (
     <TouchableOpacity onPress={() => router.push("/")}>
