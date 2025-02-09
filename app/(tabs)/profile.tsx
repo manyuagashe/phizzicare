@@ -2,12 +2,10 @@ import { Image, StyleSheet, View, Text, ScrollView } from "react-native";
 import { get_user } from "@/backend/routes";
 import { User } from "@/backend/types";
 import { useEffect, useState } from "react";
-import { ProgressBar } from "react-native-paper";
 
 async function getUserInfo(userID: number) {
   try {
     const response: User = await get_user(userID);
-    console.log(response);
     return response;
   } catch (error) {
     console.error(error);
@@ -132,8 +130,12 @@ export default function ProfileView() {
                   style={{
                     position: "absolute",
                     top: -5, // Adjust to center vertically
-                    left: `${(5 / 12) * 100}%`, // Moves based on progress
-                    transform: [{ translateX: -10 }, {translateY: -3}], // Center the emoji
+                    left: `${
+                      ((CurrentUser?.monthsCompleted ?? 1) /
+                        (CurrentUser?.monthsTotal ?? 1)) *
+                      100
+                    }%`, // Moves based on progress
+                    transform: [{ translateX: -10 }, { translateY: -3 }], // Center the emoji
                     fontSize: 18,
                   }}
                 >
@@ -142,7 +144,9 @@ export default function ProfileView() {
               </View>
 
               <Text style={{ fontSize: 14, color: "#1F2937", marginTop: 4 }}>
-                5 / 12 months completed
+                {CurrentUser
+                  ? `${CurrentUser.monthsCompleted} / ${CurrentUser.monthsTotal} completed`
+                  : "Loading.."}
               </Text>
             </View>
           </View>

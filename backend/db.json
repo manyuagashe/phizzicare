@@ -11,6 +11,8 @@
       "weight": 70,
       "currentStreak": 5,
       "longestStreak": 10,
+      "monthsCompleted": 5,
+      "monthsTotal": 12,
       "exercises": [
         {
           "id": 1,

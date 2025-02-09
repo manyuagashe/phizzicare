@@ -21,6 +21,8 @@ interface User {
   username: string;
   height: number;
   weight: number;
+  monthsCompleted: number;
+  monthsTotal: number;
   currentStreak: number;
   longestStreak: number;
   exercises: Exercise[];
