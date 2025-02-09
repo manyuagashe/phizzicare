@@ -4,19 +4,19 @@ import { motion } from "framer-motion";
 
 interface ExerciseCardProps {
   title: string;
-  duration?: string;
+  reps?: string;
   intensity?: "Easy" | "Medium" | "Hard";
   onClick?: () => void;
 }
 
-export const ExerciseCard = ({ title, duration = "30 min", intensity = "Medium", onClick }: ExerciseCardProps) => {
+export const ExerciseCard = ({ title, reps = "30 min", intensity = "Medium", onClick }: ExerciseCardProps) => {
   return (
     <TouchableOpacity onPress={onClick} style={styles.card}>
       <View style={styles.content}>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
           <View style={styles.infoContainer}>
-            <Text style={styles.duration}>{duration}</Text>
+            <Text style={styles.reps}>{reps}</Text>
             <View style={[
               styles.intensity,
               intensity === "Easy" ? styles.easy :
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  duration: {
+  reps: {
     fontSize: 14,
     color: '#757575',
   },
