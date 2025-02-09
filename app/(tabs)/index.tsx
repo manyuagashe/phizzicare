@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { motion } from 'framer-motion';
 import { ExerciseCard } from '@/components/ExerciseCard';
 import { NavigationBar } from '@/components/NavigationBar';
 
 const exercises = [
-  { title: "Morning Yoga", duration: "20 min", intensity: "Easy" as const },
-  { title: "HIIT Workout", duration: "30 min", intensity: "Hard" as const },
-  { title: "Evening Stretch", duration: "15 min", intensity: "Medium" as const },
+  { title: "10 Ankle Circles", reps: "x3", intensity: "Easy" as const },
+  { title: "12 Ankle Pumps", reps: "x3", intensity: "Hard" as const },
+  { title: "3 Alphabet Traces", reps: "x3", intensity: "Medium" as const },
 ];
 
 const Index = () => {
@@ -24,7 +24,19 @@ const Index = () => {
             <Text style={styles.streakValue}>7 Days</Text>
           </View>
 
+          {/* Actual logo */}
+          <View style={styles.logoContainer}>
+            <Image
+              source={require('@/assets/images/finallogo.png')} // Update the path to your actual logo file
+              style={styles.logo}
+              resizeMode="contain"
+            />
+          </View>
+
           <Text style={styles.header}>Today's Exercises</Text>
+
+          <View style={{ height: 4 }} /> {/* Reduced space below the header */}
+
           <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
 
           <View style={styles.exerciseList}>
@@ -81,16 +93,23 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#1F2937', // gray-800
   },
+  logoContainer: {
+    alignItems: 'center',
+  },
+  logo: {
+    width: 250, // Increased logo size
+    height: 250, // Increased logo size
+  },
   header: {
     fontSize: 24,
     fontWeight: '700',
     color: '#1F2937', // gray-800
-    marginBottom: 8,
+    marginBottom: 4, // Reduced margin below the header
   },
   subheader: {
     fontSize: 14,
     color: '#6B7280', // gray-500
-    marginBottom: 16,
+    marginBottom: 8, // Reduced margin below the subheader
   },
   exerciseList: {
     width: '100%',
