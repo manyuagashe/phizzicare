@@ -20,9 +20,6 @@ async function getUserInfo (userID: number) {
   }
 }
 
-const handleExerciseClick = (exerciseID: number) => {
-  <Link href={`/exercise/${exerciseID}`}></Link>
-}
 
 const Index = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -175,40 +172,6 @@ const styles = StyleSheet.create({
   },
   exerciseList: {
     width: "100%",
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    width: 300,
-    padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#1F2937', // gray-800
-    marginBottom: 8,
-  },
-  modalText: {
-    fontSize: 16,
-    color: '#1F2937', // gray-800
-    marginBottom: 16,
-  },
-  closeButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#1F2937', // gray-800
-    borderRadius: 5,
-  },
-  closeButtonText: {
-    color: 'white',
-    fontWeight: '700',
   },
   modalContainer: {
     flex: 1,
