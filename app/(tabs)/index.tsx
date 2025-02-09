@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { motion } from 'framer-motion';
 import { ExerciseCard } from '@/components/ExerciseCard';
-import { NavigationBar } from '@/components/NavigationBar';
 
 const exercises = [
   { title: "Morning Yoga", duration: "20 min", intensity: "Easy" as const },
