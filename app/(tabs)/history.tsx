@@ -1,109 +1,105 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { Colors } from "@/constants/Colors";
+import { motion } from "framer-motion";
+import { ExerciseCard } from "@/components/ExerciseCard";
+import { useEffect, useState } from "react";
+import { Exercise, History } from "@/backend/types";
+import { get_exercise, get_history } from "@/backend/routes";
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+type PopulatedHistory = {
+  [date: string]: Exercise[];
+};
 
 export default function TabTwoScreen() {
+  const [history, setHistory] = useState<PopulatedHistory | null>(null);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      const populated: PopulatedHistory = {};
+      const history = await get_history(1);
+      for (const [date, ids] of Object.entries(history)) {
+        populated[date] = await Promise.all(
+          ids.map(async (id) => await get_exercise(1, id))
+        );
+      }
+      setHistory(populated);
+    };
+    fetchHistory();
+  }, []);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={styles.motionContainer}
+        >
+          <View>
+            <Text style={styles.header}>Exercise History</Text>
+            <Text style={styles.subheader}>Check out your past exercises</Text>
+          </View>
+
+          <View style={styles.exerciseList}>
+            {history &&
+              Object.entries(history).map(([date, exercises], index) => (
+                <View key={date} style={styles.dateSection}>
+                  <Text style={styles.dateHeader}>{date}</Text>
+                  {exercises.map((exercise, exerciseIndex) => (
+                    <motion.div
+                      key={exercise.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: exerciseIndex * 0.1 }}
+                    >
+                      <ExerciseCard {...exercise} />
+                    </motion.div>
+                  ))}
+                </View>
+              ))}
+          </View>
+        </motion.div>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    backgroundColor: Colors.light.background,
+    paddingBottom: 20,
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  scrollContainer: {
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 24,
+  },
+  motionContainer: {
+    width: "100%",
+    maxWidth: 400,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1F2937', // gray-800
+    marginBottom: 4, // Reduced margin below the header
+  },
+  subheader: {
+    fontSize: 14,
+    color: '#6B7280', // gray-500
+    marginBottom: 12, // Reduced margin below the subheader
+  },
+  exerciseList: {
+    width: "100%",
+  },
+  dateSection: {
+    marginBottom: 24,
+  },
+  dateHeader: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#1F2937", // gray-800
+    marginBottom: 8,
   },
 });

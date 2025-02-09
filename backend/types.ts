@@ -8,6 +8,10 @@ interface Exercise {
   completed: boolean;
 }
 
+interface History {
+  [date: string]: number[]; // list of exercise ids
+}
+
 interface User {
   id: number;
   image: string;
@@ -20,7 +24,7 @@ interface User {
   currentStreak: number;
   longestStreak: number;
   exercises: Exercise[];
-  history: Exercise[];
+  history: History;
 }
 
-export {Exercise, User};
+export { Exercise, User, History };

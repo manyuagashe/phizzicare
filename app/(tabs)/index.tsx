@@ -7,13 +7,7 @@ import { get_users, get_user, add_user, get_exercises, get_exercise, mark_comple
 import { Exercise, User } from '@/backend/types'
 import { useEffect, useState } from 'react';
 import { Link, router } from 'expo-router';
-
-
-const exercises = [
-  { title: "Loading.", duration: "20 min", intensity: "Easy" },
-  { title: "Loading..", duration: "30 min", intensity: "Hard" },
-  { title: "Loading...", duration: "15 min", intensity: "Medium" },
-];
+import { Colors } from '@/constants/Colors';
 
 async function getUserInfo (userID: number) {
   try {
@@ -56,13 +50,6 @@ const Index = () => {
           animate={{ opacity: 1, y: 0 }}
           style={styles.motionContainer}
         >
-          <View style={styles.streakContainer}>
-            <Text style={styles.streakLabel}>Current Streak</Text>
-            <Text style={styles.streakValue}>{CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."} Days</Text>
-          </View>
-
-        
-
           {/* Actual logo */}
           <View style={styles.logoContainer}>
             <Image
@@ -136,37 +123,37 @@ const Index = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0FFF4', // mint-light
+    backgroundColor: Colors.light.background,
     paddingBottom: 20,
   },
   scrollContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 24,
   },
   motionContainer: {
-    width: '100%',
+    width: "100%",
     maxWidth: 400,
   },
   streakContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    backdropFilter: 'blur(10px)', // React Native does not support backdrop-blur directly, you may need a library for this effect
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backdropFilter: "blur(10px)", // React Native does not support backdrop-blur directly, you may need a library for this effect
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#A7F3D0', // mint/10
+    borderColor: "#A7F3D0", // mint/10
   },
   streakLabel: {
     fontSize: 12,
-    fontWeight: '500',
-    color: '#6B7280', // gray-500
+    fontWeight: "500",
+    color: "#6B7280", // gray-500
     marginBottom: 4,
   },
   streakValue: {
     fontSize: 32,
-    fontWeight: '700',
-    color: '#1F2937', // gray-800
+    fontWeight: "700",
+    color: "#1F2937", // gray-800
   },
   logoContainer: {
     alignItems: 'center',
@@ -184,10 +171,44 @@ const styles = StyleSheet.create({
   subheader: {
     fontSize: 14,
     color: '#6B7280', // gray-500
-    marginBottom: 8, // Reduced margin below the subheader
+    marginBottom: 12, // Reduced margin below the subheader
   },
   exerciseList: {
-    width: '100%',
+    width: "100%",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1F2937', // gray-800
+    marginBottom: 8,
+  },
+  modalText: {
+    fontSize: 16,
+    color: '#1F2937', // gray-800
+    marginBottom: 16,
+  },
+  closeButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#1F2937', // gray-800
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontWeight: '700',
   },
   modalContainer: {
     flex: 1,

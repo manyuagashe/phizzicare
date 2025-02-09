@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { AxiosResponse } from 'axios';
-import { User, Exercise } from './types';
+import { User, Exercise, History } from './types';
 
 const api = axios.create({
   baseURL: 'http://localhost:3000',
@@ -45,7 +45,7 @@ async function mark_completed(user_id: number, exercise_id: number): Promise<voi
   await api.put(`/users/${user_id}`, user);
 }
 
-async function get_history(user_id: number): Promise<Exercise[]> {
+async function get_history(user_id: number): Promise<History> {
   const user: User = await get_user(user_id);
   return user.history;
 }
