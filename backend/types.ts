@@ -9,7 +9,7 @@ interface Exercise {
 }
 
 interface History {
-  [date: string]: Exercise[];
+  [date: string]: number[]; // list of exercise ids
 }
 
 interface User {

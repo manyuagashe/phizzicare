@@ -39,7 +39,13 @@
           "instructions": "Start in a plank position. Lower your body until your chest nearly touches the floor.",
           "completed": false
         }
-      ]
+      ],
+      "history": {
+        "February 8th, 2024": [1, 2, 3],
+        "February 7th, 2024": [1, 2, 3],
+        "February 6th, 2024": [1, 2, 3],
+        "February 5th, 2024": [1, 2, 3]
+      }
     },
     {
       "id": "2",

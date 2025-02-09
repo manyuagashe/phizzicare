@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { motion } from 'framer-motion';
 import { ExerciseCard } from '@/components/ExerciseCard';
-import { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history } from '@/backend/routes'
+import { get_user } from '@/backend/routes';
 import { User } from '@/backend/types'
 import { useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
@@ -37,13 +37,6 @@ const Index = () => {
           animate={{ opacity: 1, y: 0 }}
           style={styles.motionContainer}
         >
-          <View style={styles.streakContainer}>
-            <Text style={styles.streakLabel}>Current Streak</Text>
-            <Text style={styles.streakValue}>{CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."} Days</Text>
-          </View>
-
-        
-
           {/* Actual logo */}
           <View style={styles.logoContainer}>
             <Image
@@ -53,12 +46,10 @@ const Index = () => {
             />
           </View>
 
-          <Text style={styles.header}>Today's Exercises</Text>
-          <View style={{ height: 4 }} /> {/* Reduced space below the header */}
-
-          <View style={{ height: 4 }} /> {/* Reduced space below the header */}
-
-          <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
+          <View>
+            <Text style={styles.header}>Today's Exercises</Text>
+            <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
+          </View>
 
 
           <View style={styles.exerciseList}>
@@ -80,7 +71,6 @@ const Index = () => {
                 </motion.div>
               ))
             )}
-          
           </View>
         </motion.div>
       </ScrollView>
@@ -139,7 +129,7 @@ const styles = StyleSheet.create({
   subheader: {
     fontSize: 14,
     color: '#6B7280', // gray-500
-    marginBottom: 8, // Reduced margin below the subheader
+    marginBottom: 12, // Reduced margin below the subheader
   },
   exerciseList: {
     width: "100%",

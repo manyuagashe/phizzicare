@@ -3,16 +3,26 @@ import { Colors } from "@/constants/Colors";
 import { motion } from "framer-motion";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { useEffect, useState } from "react";
-import { History } from "@/backend/types";
-import { get_history } from "@/backend/routes";
+import { Exercise, History } from "@/backend/types";
+import { get_exercise, get_history } from "@/backend/routes";
+
+type PopulatedHistory = {
+  [date: string]: Exercise[];
+};
 
 export default function TabTwoScreen() {
-  const [history, setHistory] = useState<History | null>(null);
+  const [history, setHistory] = useState<PopulatedHistory | null>(null);
 
   useEffect(() => {
     const fetchHistory = async () => {
+      const populated: PopulatedHistory = {};
       const history = await get_history(1);
-      setHistory(history);
+      for (const [date, ids] of Object.entries(history)) {
+        populated[date] = await Promise.all(
+          ids.map(async (id) => await get_exercise(1, id))
+        );
+      }
+      setHistory(populated);
     };
     fetchHistory();
   }, []);
@@ -25,10 +35,10 @@ export default function TabTwoScreen() {
           animate={{ opacity: 1, y: 0 }}
           style={styles.motionContainer}
         >
-          <Text style={styles.header}>Exercise History</Text>
-          <Text style={styles.subheader}>
-            Checkout your exercise history below!
-          </Text>
+          <View>
+            <Text style={styles.header}>Exercise History</Text>
+            <Text style={styles.subheader}>Check out your past exercises</Text>
+          </View>
 
           <View style={styles.exerciseList}>
             {history &&
@@ -71,14 +81,14 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 24,
-    fontWeight: "700",
-    color: "#1F2937", // gray-800
-    marginBottom: 8,
+    fontWeight: '700',
+    color: '#1F2937', // gray-800
+    marginBottom: 4, // Reduced margin below the header
   },
   subheader: {
     fontSize: 14,
-    color: "#6B7280", // gray-500
-    marginBottom: 16,
+    color: '#6B7280', // gray-500
+    marginBottom: 12, // Reduced margin below the subheader
   },
   exerciseList: {
     width: "100%",

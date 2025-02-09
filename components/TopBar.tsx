@@ -31,8 +31,8 @@ export default function TopBar() {
         />
       </TouchableOpacity>
       <View style={styles.streak}>
-        <Text style={styles.streakText}>{user?.currentStreak}</Text>
-        <Text style={styles.streakText}>🔥</Text>
+        <Text style={styles.streakText}>{user?.currentStreak} days</Text>
+        <Text style={styles.fire}>🔥</Text>
       </View>
     </View>
   );
@@ -56,4 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
   },
+  fire: {
+    fontSize: 23,
+  }
 });
