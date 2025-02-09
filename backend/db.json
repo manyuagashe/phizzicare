@@ -19,25 +19,25 @@
           "title": "Squats",
           "duration": 25,
           "intensity": "High",
-          "videoLink": "",
+          "videoLink": "https://c.tenor.com/1NY6qOs30XIAAAAC/tenor.gif",
           "instructions": "Stand with feet a little wider than shoulder-width apart, hips stacked over knees, and knees over ankles.",
           "completed": false
         },
         {
           "id": 2,
-          "title": "Lunges",
+          "title": "Ankle Pumps",
           "duration": 40,
-          "intensity": "Medium",
-          "videoLink": "",
+          "intensity": "Easy",
+          "videoLink": "https://www.vissco.com/wp-content/uploads/animation/sub/ankle-pump-with-knee-extension.gif",
           "instructions": "Start by standing up tall. Step forward with one foot until your leg reaches a 90-degree angle.",
           "completed": false
         },
         {
           "id": 3,
-          "title": "Push-ups",
+          "title": "Ankle Circles",
           "duration": 10,
-          "intensity": "High",
-          "videoLink": "",
+          "intensity": "Medium",
+          "videoLink": "https://cdn.jefit.com/assets/img/exercises/gifs/289.gif",
           "instructions": "Start in a plank position. Lower your body until your chest nearly touches the floor.",
           "completed": false
         }

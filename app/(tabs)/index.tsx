@@ -111,6 +111,20 @@ const Index = () => {
                 <Text style={styles.modalText}>
                   {selectedCard.instructions}
                 </Text>
+
+                {/* Updated GIF handling */}
+                <View style={styles.gifContainer}>
+                  {selectedCard.videoLink ? (
+                    <Image
+                      source={{ uri: selectedCard.videoLink }}
+                      style={styles.gif}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <Text style={styles.noGifText}>No demonstration available</Text>
+                  )}
+                </View>
+
                 <TouchableOpacity
                   style={styles.closeButton}
                   onPress={() => setModalVisible(false)}
@@ -143,41 +157,41 @@ const styles = StyleSheet.create({
   },
   streakContainer: {
     backgroundColor: "rgba(255, 255, 255, 0.5)",
-    backdropFilter: "blur(10px)", // React Native does not support backdrop-blur directly, you may need a library for this effect
+    backdropFilter: "blur(10px)",
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: "#A7F3D0", // mint/10
+    borderColor: "#A7F3D0",
   },
   streakLabel: {
     fontSize: 12,
     fontWeight: "500",
-    color: "#6B7280", // gray-500
+    color: "#6B7280",
     marginBottom: 4,
   },
   streakValue: {
     fontSize: 32,
     fontWeight: "700",
-    color: "#1F2937", // gray-800
+    color: "#1F2937",
   },
   logoContainer: {
     alignItems: "center",
   },
   logo: {
-    width: 250, // Increased logo size
-    height: 250, // Increased logo size
+    width: 250,
+    height: 250,
   },
   header: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#1F2937", // gray-800
-    marginBottom: 4, // Reduced margin below the header
+    color: "#1F2937",
+    marginBottom: 4,
   },
   subheader: {
     fontSize: 14,
-    color: "#6B7280", // gray-500
-    marginBottom: 12, // Reduced margin below the subheader
+    color: "#6B7280",
+    marginBottom: 12,
   },
   exerciseList: {
     width: "100%",
@@ -189,7 +203,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    width: 300,
+    width: '90%',
+    maxWidth: 400,
     padding: 20,
     backgroundColor: "white",
     borderRadius: 10,
@@ -198,18 +213,36 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#1F2937", // gray-800
+    color: "#1F2937",
     marginBottom: 8,
   },
   modalText: {
     fontSize: 16,
-    color: "#1F2937", // gray-800
+    color: "#1F2937",
     marginBottom: 16,
+    textAlign: "center",
+  },
+  gifContainer: {
+    width: '100%',
+    height: 200,
+    marginVertical: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gif: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 8,
+  },
+  noGifText: {
+    fontSize: 16,
+    color: '#6B7280',
+    textAlign: 'center',
   },
   closeButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: "#1F2937", // gray-800
+    backgroundColor: "#1F2937",
     borderRadius: 5,
   },
   closeButtonText: {
