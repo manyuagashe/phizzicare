@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import { User, Exercise, History } from './types';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://localhost:3001',
 });
 
 async function get_users(): Promise<User[]> {

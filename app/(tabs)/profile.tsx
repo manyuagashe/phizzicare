@@ -1,21 +1,17 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history } from '@/backend/routes'
-import { User } from '@/backend/types'
+import { Image, StyleSheet, View, Text, ScrollView } from 'react-native';
+import { get_user } from '@/backend/routes';
+import { User } from '@/backend/types';
 import { useEffect, useState } from 'react';
+import { ProgressBar } from 'react-native-paper';
 
-async function getUserInfo (userID: number) {
+async function getUserInfo(userID: number) {
   try {
-    const response: User = await get_user(userID)
-    console.log(response)
-    return response
+    const response: User = await get_user(userID);
+    console.log(response);
+    return response;
   } catch (error) {
-    console.error(error)
-    return null
+    console.error(error);
+    return null;
   }
 }
 
@@ -30,78 +26,215 @@ export default function ProfileView() {
     fetchUser();
   }, []);
 
-
-
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={<Image source={{ uri: 'https://source.unsplash.com/800x600/?water' }} style={{ width: '100%', height: 200 }} />}
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedView style={styles.flexCol}>
-          <ThemedText style={styles.titleText}>
-            {CurrentUser ? `${CurrentUser.firstName} ${CurrentUser.lastName}` : "Loading.."}
-          </ThemedText>
-          <ThemedText style={styles.infoText}>
-            username: {CurrentUser ? `${CurrentUser.username}` : "Loading.."}
-          </ThemedText>
-          <ThemedText style={styles.infoText}>
-            email: {CurrentUser ? `${CurrentUser.email}` : "Loading.."}
-          </ThemedText>
-          <ThemedText style={styles.infoText}>
-            BioInfo: {CurrentUser ? `
-                height: ${CurrentUser.height}
-                weight: ${CurrentUser.weight}` : "Loading.."}
-          </ThemedText>
+    <View style={styles.mainContainer}>
+      <ScrollView>
+        <View style={styles.profileImageContainer}>
+          <Image 
+            source={{ uri: CurrentUser?.image || 'https://source.unsplash.com/400x400/?portrait' }} 
+            style={styles.profileImage} 
+          />
+        </View>
+        <View style={styles.container}>
+          <View style={styles.profileContainer}>
+            <Text style={styles.titleText}>
+              {CurrentUser ? `${CurrentUser.firstName} ${CurrentUser.lastName}` : "Loading.."}
+            </Text>
+            <Text style={styles.usernameText}>
+              @{CurrentUser ? `${CurrentUser.username}` : "Loading.."}
+            </Text>
+            <Text style={styles.emailText}>
+              {CurrentUser ? `${CurrentUser.email}` : "Loading.."}
+            </Text>
+            
+            {/* <View style={styles.bioContainer}>
+              <Text style={styles.bioLabel}>Bio Info</Text>
+              <Text style={styles.bioText}>
+                {CurrentUser ? `Height: ${CurrentUser.height}\nWeight: ${CurrentUser.weight}` : "Loading.."}
+              </Text>
+            </View> */}
 
-          <ThemedView style={styles.flexRow}>
-            <ThemedText style={styles.streakText}>
-              Streak: {CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."}
-            </ThemedText>
-            <ThemedText style={styles.streakText}>
-              Max Streak: {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} 
-            </ThemedText>
-          </ThemedView>
-        </ThemedView>
-      </ThemedView>
-    </ParallaxScrollView>
+            <View style={styles.streakContainer}>
+
+            <View style={styles.streakBox}>
+                <Text style={styles.streakLabel}>Height (cms)</Text>
+                <Text style={styles.streakValue}>
+                  {CurrentUser ? `${CurrentUser.height}` : "Loading.."} Days
+                </Text>
+              </View>
+
+              <View style={styles.streakBox}>
+                <Text style={styles.streakLabel}>Weight (kgs)</Text>
+                <Text style={styles.streakValue}>
+                  {CurrentUser ? `${CurrentUser.weight}` : "Loading.."} Days
+                </Text>
+                </View>
+              </View>
+
+              <View style={styles.streakContainer}>
+
+              <View style={styles.streakBox}>
+                <Text style={styles.streakLabel}>Current Streak</Text>
+                <Text style={styles.streakValue}>
+                  {CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."} Days
+                </Text>
+              </View>
+              
+              <View style={styles.streakBox}>
+                <Text style={styles.streakLabel}>Best Streak</Text>
+                <Text style={styles.streakValue}>
+                  {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} Days
+                </Text>
+              </View>
+               </View>
+
+  {/* New Progress Box for Therapy Progress */}
+  <View style={[styles.streakBox, styles.progressBox]}>
+              <Text style={styles.streakLabel}>Recovery Progress</Text>
+
+              {/* Progress Bar Container */}
+              <View style={{ position: 'relative', width: '100%', height: 20, marginTop: 8 }}>
+                {/* Progress Bar Background */}
+                <View style={{ width: '100%', height: 10, backgroundColor: '#D1FAE5', borderRadius: 5, overflow: 'hidden' }}>
+                  {/* Filled Progress */}
+                  <View style={{ width: `${(5 / 12) * 100}%`, height: '100%', backgroundColor: '#10B981' }} />
+                </View>
+
+                {/* Smiley Face Indicator */}
+                <Text 
+                  style={{
+                    position: 'absolute',
+                    top: -5, // Adjust to center vertically
+                    left: `${(5 / 12) * 100}%`, // Moves based on progress
+                    transform: [{ translateX: -10 }], // Center the emoji
+                    fontSize: 18
+                  }}
+                >
+                  😊
+                </Text>
+              </View>
+
+              <Text style={{ fontSize: 14, color: '#1F2937', marginTop: 4 }}>
+                5 / 12 months completed
+              </Text>
+            </View>
+
+
+
+
+
+
+            
+
+
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    padding: 20,
-  },
-  flexCol: {
+  mainContainer: {
     flex: 1,
-    flexDirection: 'column',
+    backgroundColor: '#F0FFF4',
+  },
+  profileImageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center', // Center vertically
+    alignSelf: 'center', // Center horizontally
+    marginTop: 50,
+    marginBottom: 15,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    borderWidth: 5,
+    borderColor: '#A7F3D0',
+    overflow: 'hidden',
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 75,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#F0FFF4',
+    paddingBottom: 20,
+  },
+  profileContainer: {
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: '#F0FFF4',
   },
   titleText: {
-    color: '#ffffff',
-    textAlign: 'center',
     fontSize: 32,
-    paddingVertical: 36,
+    fontWeight: '700',
+    color: '#1F2937',
+    marginTop: 24,
+    marginBottom: 8,
   },
-  infoText: {
-    paddingVertical: 20,
+  usernameText: {
+    fontSize: 16,
+    color: '#6B7280',
+    marginBottom: 8,
   },
-  flexRow: {
-    flexDirection: 'row',
-    marginTop: 80,
+  emailText: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginBottom: 24,
   },
-  streakText: {
-    flex: 1,
-    textAlign: 'center',
-    borderRadius: 9999,
-    backgroundColor: '#38b2ac',
-    borderColor: '#38b2ac',
+  bioContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 12,
+    padding: 16,
+    width: '100%',
+    marginBottom: 24,
     borderWidth: 1,
-    paddingVertical: 8,
-    marginHorizontal: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 }, // Increased shadow offset height
-    shadowOpacity: 0.2, // Increased shadow opacity
-    shadowRadius: 12, // Increased shadow radius
+    borderColor: '#A7F3D0',
   },
-}); 
+  bioLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#6B7280',
+    marginBottom: 8,
+  },
+  bioText: {
+    fontSize: 16,
+    color: '#1F2937',
+    lineHeight: 24,
+  },
+  streakContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    gap: 16,
+  },
+  streakBox: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#A7F3D0',
+    alignItems: 'center',
+
+    marginBottom: 24,
+  },
+  progressBox: {
+    width: '100%',
+    marginTop: 16,
+  },
+  streakLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#6B7280',
+    marginBottom: 4,
+  },
+  streakValue: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1F2937',
+  },
+});
 
