@@ -3,7 +3,7 @@ import { Text } from "react-native";
 import { get_user } from "@/backend/routes";
 import { useEffect, useState } from "react";
 import { User } from "@/backend/types";
-import { useRouter } from "expo-router";
+import { useRouter, usePathname } from "expo-router";
 import { Colors } from "@/constants/Colors";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -18,7 +18,8 @@ export default function TopBar() {
   const [user, setUser] = useState<User | null>(null);
   const streakActive = useStreak()?.streakActive;
   const router = useRouter();
-
+  const pathname = usePathname();
+  
   useEffect(() => {
     const fetchUser = async () => {
       const user = await get_user(1);
@@ -26,6 +27,42 @@ export default function TopBar() {
     };
     fetchUser();
   }, []);
+
+  const renderRightContent = () => {
+    if (pathname === "/") {
+      return (
+        <Image
+          source={require("@/assets/images/finallogo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      );
+    }
+
+    return (
+      <View style={styles.streak}>
+        <Text style={styles.streakText}>{user?.currentStreak} days</Text>
+        {streakActive ? (
+          <FilledFire
+            width={23}
+            height={23}
+            style={styles.fire}
+            strokeWidth={2}
+          />
+        ) : (
+          <View>
+            <OutlineFire
+              width={23}
+              height={23}
+              style={styles.fire}
+              strokeWidth={2}
+            />
+            <CircleAlert size={10} color="red" style={styles.alert as any} />
+          </View>
+        )}
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -39,27 +76,7 @@ export default function TopBar() {
           }}
         />
       </TouchableOpacity>
-      <View style={styles.streak}>
-        <Text style={styles.streakText}>{user?.currentStreak} days</Text>
-        {streakActive ? (
-          <FilledFire
-            width={23}
-            height={23}
-            style={styles.fire}
-            strokeWidth={2}
-          />
-        ) : (
-            <View>
-            <OutlineFire
-              width={23}
-              height={23}
-              style={styles.fire}
-              strokeWidth={2}
-            />
-            <CircleAlert size={10} color="red" style={styles.alert as any} />
-            </View>
-        )}
-      </View>
+      {renderRightContent()}
     </View>
   );
 }
@@ -89,5 +106,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -5,
     left: 20,
+  },
+  logo: {
+    width: 100,
+    height: 40,
   }
 });

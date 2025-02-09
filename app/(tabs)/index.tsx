@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  Pressable,
   Modal,
   TouchableOpacity,
 } from "react-native";
@@ -16,6 +15,13 @@ import { Exercise, User } from "@/backend/types";
 import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import useStreak from "@/hooks/useStreak";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import FilledFire from "@/assets/icons/filled_fire";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import OutlineFire from "@/assets/icons/fire_outline";
+import { CircleAlert } from "lucide-react";
 
 async function getUserInfo(userID: number) {
   try {
@@ -31,24 +37,34 @@ const Index = () => {
   const [exercises, setExercises] = useState<Exercise[] | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Exercise | null>(null);
-  const setStreakActive = useStreak()?.setStreakActive;
+  const [user, setUser] = useState<User | null>(null);
+  const { streakActive, setStreakActive } = useStreak() || {};
 
   useEffect(() => {
     async function fetchExercises() {
-      const user = await getUserInfo(1);
-      setExercises(user?.exercises || null);
+      const userData = await getUserInfo(1);
+      setUser(userData);
+      setExercises(userData?.exercises || null);
       if (setStreakActive) {
         setStreakActive(
-          user?.exercises.every((exercise) => exercise.completed) ?? false
+          userData?.exercises.every((exercise) => exercise.completed) ?? false
         );
       }
     }
     fetchExercises();
-  }, [exercises]);
+  }, [exercises, setStreakActive]);
 
-  const openModel = (card: React.SetStateAction<Exercise | null>) => {
+  const openModal = (card: React.SetStateAction<Exercise | null>) => {
     setModalVisible(true);
     setSelectedCard(card);
+  };
+
+  const getStreakMessage = () => {
+    if (!user) return "";
+    if (streakActive) {
+      return "Awesome! You've completed all exercises for today!";
+    }
+    return "Complete all of today's exercises to maintain your streak!";
   };
 
   return (
@@ -59,13 +75,30 @@ const Index = () => {
           animate={{ opacity: 1, y: 0 }}
           style={styles.motionContainer}
         >
-          {/* Actual logo */}
-          <View style={styles.logoContainer}>
-            <Image
-              source={require("@/assets/images/finallogo.png")}
-              style={styles.logo}
-              resizeMode="contain"
-            />
+          <View style={styles.streakContainer}>
+            <Text style={styles.streakLabel}>Current Streak</Text>
+            <View style={styles.streakContent}>
+              <Text style={styles.streakValue}>{user?.currentStreak || 0} days</Text>
+              {streakActive ? (
+                <FilledFire
+                  width={30}
+                  height={30}
+                  style={styles.streakFire}
+                  strokeWidth={2}
+                />
+              ) : (
+                <View>
+                  <OutlineFire
+                    width={30}
+                    height={30}
+                    style={styles.streakFire}
+                    strokeWidth={2}
+                  />
+                  <CircleAlert size={12} color="red" style={styles.streakAlert} />
+                </View>
+              )}
+            </View>
+            <Text style={styles.streakMessage}>{getStreakMessage()}</Text>
           </View>
 
           <View>
@@ -89,15 +122,14 @@ const Index = () => {
                   <ExerciseCard
                     exercise={exercise}
                     setExercises={setExercises}
-                    onClick={() => {
-                      openModel(exercise);
-                    }}
+                    onClick={() => openModal(exercise)}
                   />
                 </motion.div>
               ))
             )}
           </View>
         </motion.div>
+
         {selectedCard && (
           <Modal
             animationType="slide"
@@ -112,7 +144,6 @@ const Index = () => {
                   {selectedCard.instructions}
                 </Text>
 
-                {/* Updated GIF handling */}
                 <View style={styles.gifContainer}>
                   {selectedCard.videoLink ? (
                     <Image
@@ -163,24 +194,36 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderWidth: 1,
     borderColor: "#A7F3D0",
+    alignItems: 'center',
   },
   streakLabel: {
-    fontSize: 12,
-    fontWeight: "500",
+    fontSize: 14,
     color: "#6B7280",
     marginBottom: 4,
+  },
+  streakContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   streakValue: {
     fontSize: 32,
     fontWeight: "700",
     color: "#1F2937",
+    marginRight: 8,
   },
-  logoContainer: {
-    alignItems: "center",
+  streakFire: {
+    marginLeft: 4,
   },
-  logo: {
-    width: 250,
-    height: 250,
+  streakAlert: {
+    position: "absolute",
+    top: -5,
+    left: 25,
+  },
+  streakMessage: {
+    fontSize: 14,
+    color: "#6B7280",
+    marginTop: 8,
+    textAlign: 'center',
   },
   header: {
     fontSize: 24,
