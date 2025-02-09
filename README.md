@@ -54,4 +54,4 @@ Join our community of developers creating universal apps.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
 
 # fizicare
-hackduke2025 project: creating a duolingo for physical therapy
+hackduke2025 project: creating a duolingo for physical therapy.
