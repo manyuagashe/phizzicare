@@ -3,7 +3,7 @@ import { Colors } from "@/constants/Colors";
 import { motion } from "framer-motion";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { useEffect, useState } from "react";
-import { Exercise, History } from "@/backend/types";
+import { Exercise } from "@/backend/types";
 import { get_exercise, get_history } from "@/backend/routes";
 
 type PopulatedHistory = {
@@ -52,7 +52,7 @@ export default function TabTwoScreen() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: exerciseIndex * 0.1 }}
                     >
-                      <ExerciseCard {...exercise} />
+                      <ExerciseCard exercise={exercise} />
                     </motion.div>
                   ))}
                 </View>

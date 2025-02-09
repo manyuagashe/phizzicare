@@ -35,13 +35,13 @@ async function get_exercise(user_id: number, exercise_id: number): Promise<Exerc
   return exercise;
 }
 
-async function mark_completed(user_id: number, exercise_id: number): Promise<void> {
+async function toggle_completed(user_id: number, exercise_id: number): Promise<void> {
   const user: User = await get_user(user_id);
   const exercise = user.exercises.find((exercise) => exercise.id === exercise_id);
   if (exercise === undefined) {
     throw new Error('Exercise not found');
   }
-  exercise.completed = true;
+  exercise.completed = !exercise.completed;
   await api.put(`/users/${user_id}`, user);
 }
 
@@ -50,4 +50,4 @@ async function get_history(user_id: number): Promise<History> {
   return user.history;
 }
 
-export { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history };
+export { get_users, get_user, add_user, get_exercises, get_exercise, toggle_completed, get_history };

@@ -1,34 +1,78 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { motion } from "framer-motion";
+import { Dispatch, SetStateAction } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Exercise } from "@/backend/types";
+import { toggle_completed } from "@/backend/routes";
 
 interface ExerciseCardProps {
-  title: string;
-  reps?: string;
-  intensity?: "Easy" | "Medium" | "Hard";
+  exercise: Exercise;
   onClick?: () => void;
+  setExercises?: Dispatch<SetStateAction<Exercise[] | null>>;
 }
 
-export const ExerciseCard = ({ title, reps = "30 min", intensity = "Medium", onClick }: ExerciseCardProps) => {
+const defaultExercise: Exercise = {
+  id: 0,
+  videoLink: "",
+  title: "Exercise",
+  reps: "10 reps",
+  intensity: "Medium",
+  completed: false,
+  instructions: "Do the exercise",
+};
+
+export const ExerciseCard = ({
+  exercise = defaultExercise,
+  onClick,
+  setExercises,
+}: ExerciseCardProps) => {
+  const handlePress = async () => {
+    setExercises!(
+      (exercises) =>
+        exercises?.filter((e) =>
+          e.id === exercise.id ? { ...e, completed: !e.completed } : e
+        ) || null
+    );
+    toggle_completed(1, exercise.id);
+  };
+
   return (
     <TouchableOpacity onPress={onClick} style={styles.card}>
       <View style={styles.content}>
         <View style={styles.textContainer}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{exercise.title}</Text>
           <View style={styles.infoContainer}>
-            <Text style={styles.reps}>{reps}</Text>
-            <View style={[
-              styles.intensity,
-              intensity === "Easy" ? styles.easy :
-              intensity === "Medium" ? styles.medium :
-              styles.hard
-            ]}>
-              <Text style={styles.intensityText}>{intensity}</Text>
+            <Text style={styles.reps}>{exercise.reps}</Text>
+            <View
+              style={[
+                styles.intensity,
+                exercise.intensity === "Easy"
+                  ? styles.easy
+                  : exercise.intensity === "Medium"
+                  ? styles.medium
+                  : styles.hard,
+              ]}
+            >
+              <Text style={styles.intensityText}>{exercise.intensity}</Text>
             </View>
           </View>
         </View>
-        <View style={styles.iconContainer}>
-          <Text style={[styles.icon, styles.iconContainer]}>{'>'}</Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ marginRight: 8 }}>
+            <TouchableOpacity onPress={handlePress}>
+              {setExercises !== undefined ? exercise.completed 
+              ? (
+                <View style={styles.complete}>
+                  <Text style={styles.checkboxText}>✓</Text>
+                </View>
+              ) : (
+                <View style={styles.incomplete}>
+                  <Text style={styles.checkboxText}>!</Text>
+                </View>
+              ) : null}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.iconContainer}>
+            <Text style={[styles.icon, styles.iconContainer]}>{">"}</Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -37,42 +81,42 @@ export const ExerciseCard = ({ title, reps = "30 min", intensity = "Medium", onC
 
 const styles = StyleSheet.create({
   card: {
-    width: '100%',
-    backgroundColor: 'white',
+    width: "100%",
+    backgroundColor: "white",
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 }, // Increased shadow offset height
     shadowOpacity: 0.2, // Increased shadow opacity
     shadowRadius: 12, // Increased shadow radius
-    borderColor: '#E0F7FA',
+    borderColor: "#E0F7FA",
     borderWidth: 1,
-    overflow: 'hidden',
-    cursor: 'pointer',
+    overflow: "hidden",
+    cursor: "pointer",
     marginVertical: 8, // Reduced margin above and below the card
   },
   content: {
     padding: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   textContainer: {
-    flexDirection: 'column',
+    flexDirection: "column",
     gap: 4,
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
   },
   infoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
   reps: {
     fontSize: 14,
-    color: '#757575',
+    color: "#757575",
   },
   intensity: {
     paddingHorizontal: 8,
@@ -80,23 +124,49 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   easy: {
-    backgroundColor: '#E0F7FA',
-    color: '#00796B',
+    backgroundColor: "#E0F7FA",
+    color: "#00796B",
   },
   medium: {
-    backgroundColor: '#B2DFDB',
-    color: '#00796B',
+    backgroundColor: "#B2DFDB",
+    color: "#00796B",
   },
   hard: {
-    backgroundColor: '#80CBC4',
-    color: '#00796B',
+    backgroundColor: "#80CBC4",
+    color: "#00796B",
   },
   intensityText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   iconContainer: {},
   icon: {
     fontSize: 24,
+  },
+  incomplete: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: "#ff4040",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    transform: [{ translateY: 2 }],
+  },
+  complete: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: "#4ade80",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    transform: [{ translateY: 2 }],
+  },
+  checkboxText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "700",
+    transform: [{ translateY: -1 }],
   },
 });

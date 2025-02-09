@@ -3,14 +3,13 @@ import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { motion } from 'framer-motion';
 import { ExerciseCard } from '@/components/ExerciseCard';
 import { get_user } from '@/backend/routes';
-import { User } from '@/backend/types'
+import { Exercise, User } from '@/backend/types'
 import { useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 
 async function getUserInfo (userID: number) {
   try {
     const response: User = await get_user(userID)
-    console.log(response)
     return response
   } catch (error) {
     console.error(error)
@@ -19,15 +18,15 @@ async function getUserInfo (userID: number) {
 }
 
 const Index = () => {
-  const [CurrentUser, setCurrentUser] = useState<User | null>(null);
+  const [exercises, setExercises] = useState<Exercise[] | null>(null);
 
   useEffect(() => {
-    async function fetchUser() {
+    async function fetchExcersizes() {
       const user = await getUserInfo(1);
-      setCurrentUser(user);
+      setExercises(user?.exercises || null);
     }
-    fetchUser();
-  }, []);
+    fetchExcersizes();
+  }, [exercises]);
 
   return (
     <View style={styles.container}>
@@ -53,10 +52,10 @@ const Index = () => {
 
 
           <View style={styles.exerciseList}>
-            { CurrentUser === null ? (
+            { exercises === null ? (
               <Text>Loading...</Text>
             ) : (
-              CurrentUser.exercises.map((exercise, index) => (
+              exercises.map((exercise, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -64,9 +63,8 @@ const Index = () => {
                   transition={{ delay: index * 0.1 }}
                 >
                   <ExerciseCard 
-                    title={exercise.title} // Map 'name' to 'title'
-                    reps={exercise.reps} // Map 'duration' to 'duration'
-                    intensity={exercise.intensity}
+                    exercise={exercise}
+                    setExercises={setExercises}
                   />
                 </motion.div>
               ))

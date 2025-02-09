@@ -28,7 +28,7 @@
           "intensity": "Medium",
           "videoLink": "",
           "instructions": "Start by standing up tall. Step forward with one foot until your leg reaches a 90-degree angle.",
-          "completed": false
+          "completed": true
         },
         {
           "id": 3,
@@ -37,14 +37,30 @@
           "intensity": "High",
           "videoLink": "",
           "instructions": "Start in a plank position. Lower your body until your chest nearly touches the floor.",
-          "completed": false
+          "completed": true
         }
       ],
       "history": {
-        "February 8th, 2024": [1, 2, 3],
-        "February 7th, 2024": [1, 2, 3],
-        "February 6th, 2024": [1, 2, 3],
-        "February 5th, 2024": [1, 2, 3]
+        "February 8th, 2024": [
+          1,
+          2,
+          3
+        ],
+        "February 7th, 2024": [
+          1,
+          2,
+          3
+        ],
+        "February 6th, 2024": [
+          1,
+          2,
+          3
+        ],
+        "February 5th, 2024": [
+          1,
+          2,
+          3
+        ]
       }
     },
     {
@@ -83,7 +99,7 @@
           "duration": 30,
           "intensity": "Small",
           "videoLink": "",
-          "instructions": "Lean back against a wall and stick one leg out. Rotate slowly both clockwise and counterclockwise at the ankle.", 
+          "instructions": "Lean back against a wall and stick one leg out. Rotate slowly both clockwise and counterclockwise at the ankle.",
           "completed": false
         }
       ]
