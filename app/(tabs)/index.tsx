@@ -233,6 +233,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#A7F3D0",
     alignItems: "center",
+    minHeight: 140,
   },
   streakLabel: {
     fontSize: 14,

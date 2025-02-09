@@ -163,14 +163,14 @@ const styles = StyleSheet.create({
   },
   profileImageContainer: {
     alignItems: "center",
-    justifyContent: "center", // Center vertically
-    alignSelf: "center", // Center horizontally
+    justifyContent: "center",
+    alignSelf: "center",
     marginTop: 50,
     marginBottom: 15,
     width: 150,
     height: 150,
     borderRadius: 75,
-    borderWidth: 5,
+    borderWidth: 3,
     borderColor: "#A7F3D0",
     overflow: "hidden",
   },

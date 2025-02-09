@@ -29,11 +29,13 @@ export default function TopBar() {
   }, []);
 
   const Logo = () => (
-    <Image
-      source={require("@/assets/images/finallogo.png")}
-      style={styles.logo}
-      resizeMode="contain"
-    />
+    <TouchableOpacity onPress={() => router.push("/")}>
+      <Image
+        source={require("@/assets/images/finallogo.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
+    </TouchableOpacity>
   );
 
   const Streak = () => (
@@ -67,7 +69,9 @@ export default function TopBar() {
         style={{
           width: 40,
           height: 40,
-          borderRadius: 15,
+          borderRadius: 25,
+          borderWidth: 1,
+          borderColor: '#A7F3D0'
         }}
       />
     </TouchableOpacity>
