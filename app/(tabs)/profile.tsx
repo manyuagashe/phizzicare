@@ -60,16 +60,16 @@ export default function ProfileView() {
 
             <View style={styles.streakContainer}>
               <View style={styles.streakBox}>
-                <Text style={styles.streakLabel}>Height (cms)</Text>
+                <Text style={styles.streakLabel}>Height</Text> 
                 <Text style={styles.streakValue}>
-                  {CurrentUser ? `${CurrentUser.height}` : "Loading.."} Days
+                  {CurrentUser ? `${CurrentUser.height}` : "Loading.."} cms
                 </Text>
               </View>
 
               <View style={styles.streakBox}>
-                <Text style={styles.streakLabel}>Weight (kgs)</Text>
+                <Text style={styles.streakLabel}>Weight</Text>
                 <Text style={styles.streakValue}>
-                  {CurrentUser ? `${CurrentUser.weight}` : "Loading.."} Days
+                  {CurrentUser ? `${CurrentUser.weight}` : "Loading.."} kgs
                 </Text>
               </View>
             </View>
@@ -188,12 +188,13 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: "center",
     backgroundColor: "#F0FFF4",
+    marginBottom: 10
   },
   titleText: {
     fontSize: 32,
     fontWeight: "700",
     color: "#1F2937",
-    marginTop: 24,
+    marginTop: 16,
     marginBottom: 8,
   },
   usernameText: {
