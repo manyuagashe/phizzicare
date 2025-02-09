@@ -19,7 +19,7 @@ export default function TopBar() {
   const streakActive = useStreak()?.streakActive;
   const router = useRouter();
   const pathname = usePathname();
-  
+
   useEffect(() => {
     const fetchUser = async () => {
       const user = await get_user(1);
@@ -28,55 +28,56 @@ export default function TopBar() {
     fetchUser();
   }, []);
 
-  const renderRightContent = () => {
-    if (pathname === "/") {
-      return (
-        <Image
-          source={require("@/assets/images/finallogo.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-      );
-    }
+  const Logo = () => (
+    <Image
+      source={require("@/assets/images/finallogo.png")}
+      style={styles.logo}
+      resizeMode="contain"
+    />
+  );
 
-    return (
-      <View style={styles.streak}>
-        <Text style={styles.streakText}>{user?.currentStreak} days</Text>
-        {streakActive ? (
-          <FilledFire
+  const Streak = () => (
+    <View style={styles.streak}>
+      <Text style={styles.streakText}>{user?.currentStreak}</Text>
+      {streakActive ? (
+        <FilledFire
+          width={23}
+          height={23}
+          style={styles.fire}
+          strokeWidth={2}
+        />
+      ) : (
+        <View>
+          <OutlineFire
             width={23}
             height={23}
             style={styles.fire}
             strokeWidth={2}
           />
-        ) : (
-          <View>
-            <OutlineFire
-              width={23}
-              height={23}
-              style={styles.fire}
-              strokeWidth={2}
-            />
-            <CircleAlert size={10} color="red" style={styles.alert as any} />
-          </View>
-        )}
-      </View>
-    );
-  };
+          <CircleAlert size={10} color="red" style={styles.alert as any} />
+        </View>
+      )}
+    </View>
+  );
+
+  const Profile = () => (
+    <TouchableOpacity onPress={() => router.push("/profile")}>
+      <Image
+        source={{ uri: user?.image }}
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 15,
+        }}
+      />
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => router.push("/profile")}>
-        <Image
-          source={{ uri: user?.image }}
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 15,
-          }}
-        />
-      </TouchableOpacity>
-      {renderRightContent()}
+      <Logo />
+      {pathname !== "/" && <Streak />}
+      <Profile />
     </View>
   );
 }
@@ -94,6 +95,9 @@ const styles = StyleSheet.create({
   streak: {
     flexDirection: "row",
     alignItems: "center",
+    position: "absolute",
+    left: "50%",
+    transform: [{ translateX: "-50%" }],
   },
   streakText: {
     fontSize: 20,
@@ -110,5 +114,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 40,
-  }
+    transform: [{ translateY: 4 }],
+  },
 });

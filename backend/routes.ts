@@ -45,9 +45,14 @@ async function toggle_completed(user_id: number, exercise_id: number): Promise<v
   await api.put(`/users/${user_id}`, user);
 }
 
+async function put_user(user_id: number, new_user: User): Promise<User> {
+  api.put(`/users/${user_id}`, new_user);
+  return new_user
+}
+
 async function get_history(user_id: number): Promise<History> {
   const user: User = await get_user(user_id);
   return user.history;
 }
 
-export { get_users, get_user, add_user, get_exercises, get_exercise, toggle_completed, get_history };
+export { get_users, get_user, add_user, get_exercises, get_exercise, toggle_completed, get_history, put_user };

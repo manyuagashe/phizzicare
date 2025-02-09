@@ -25,16 +25,6 @@ export const ExerciseCard = ({
   onClick,
   setExercises,
 }: ExerciseCardProps) => {
-  const handlePress = async () => {
-    setExercises!(
-      (exercises) =>
-        exercises?.filter((e) =>
-          e.id === exercise.id ? { ...e, completed: !e.completed } : e
-        ) || null
-    );
-    toggle_completed(1, exercise.id);
-  };
-
   return (
     <TouchableOpacity onPress={onClick} style={styles.card}>
       <View style={styles.content}>
@@ -58,7 +48,7 @@ export const ExerciseCard = ({
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <View style={{ marginRight: 8 }}>
-            <TouchableOpacity onPress={handlePress}>
+            <TouchableOpacity>
               <View style={styles.status}>
                 {setExercises !== undefined ? (
                   exercise.completed ? (

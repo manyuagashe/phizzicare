@@ -9,7 +9,7 @@
       "username": "john.doe",
       "height": 175,
       "weight": 70,
-      "currentStreak": 5,
+      "currentStreak": 6,
       "longestStreak": 10,
       "monthsCompleted": 5,
       "monthsTotal": 12,
@@ -21,7 +21,7 @@
           "intensity": "High",
           "videoLink": "https://c.tenor.com/1NY6qOs30XIAAAAC/tenor.gif",
           "instructions": "Stand with feet shoulder-width apart, lower your hips by bending your knees, and keep your chest upright. Stop when thighs are parallel, then push through your heels to stand. Avoid letting knees cave in.",
-          "completed": false
+          "completed": true
         },
         {
           "id": 2,
@@ -30,7 +30,7 @@
           "intensity": "Easy",
           "videoLink": "https://www.vissco.com/wp-content/uploads/animation/sub/ankle-pump-with-knee-extension.gif",
           "instructions": "Flex your foot upward, then point it downward in a slow, controlled motion. Repeat to improve circulation and mobility. Ensure full range of motion without pain.",
-          "completed": false
+          "completed": true
         },
         {
           "id": 3,
@@ -39,7 +39,7 @@
           "intensity": "Medium",
           "videoLink": "https://cdn.jefit.com/assets/img/exercises/gifs/289.gif",
           "instructions": "Lift your foot slightly and rotate your ankle in smooth circles, first clockwise, then counterclockwise. Keep movements controlled and avoid using your knee or hip. Do equal reps in both directions.",
-          "completed": false
+          "completed": true
         }
       ],
       "history": {

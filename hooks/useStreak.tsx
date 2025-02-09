@@ -1,5 +1,5 @@
 import { useState, useContext, createContext, Dispatch, SetStateAction, useEffect } from "react";
-import { get_exercises } from "@/backend/routes";
+import { get_exercises, get_user, put_user } from "@/backend/routes";
 
 const StreakContext = createContext<{ streakActive: boolean, setStreakActive: Dispatch<SetStateAction<boolean>>} | undefined>(undefined);
 
@@ -13,7 +13,18 @@ export function StreakProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const fetchStreakActive = async () => {
       const exercises = await get_exercises(1);
-      setStreakActive(exercises.every((exercise) => exercise.completed));
+      const allDone = exercises.every((exercise) => exercise.completed);
+      setStreakActive(allDone);
+      if (allDone) {
+        const user = await get_user(1);
+        user.currentStreak = 6;
+        await put_user(1, user);
+      }
+      else {
+        const user = await get_user(1);
+        user.currentStreak = 5;
+        await put_user(1, user);
+      }
     };
     fetchStreakActive();
   }, [streakActive])

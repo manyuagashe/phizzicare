@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { motion } from "framer-motion";
 import { ExerciseCard } from "@/components/ExerciseCard";
-import { get_user } from "@/backend/routes";
+import { get_user, toggle_completed } from "@/backend/routes";
 import { Exercise, User } from "@/backend/types";
 import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
@@ -21,7 +21,7 @@ import FilledFire from "@/assets/icons/filled_fire";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import OutlineFire from "@/assets/icons/fire_outline";
-import { CircleAlert } from "lucide-react";
+import { CircleAlert, ArrowLeft } from "lucide-react";
 
 async function getUserInfo(userID: number) {
   try {
@@ -67,6 +67,17 @@ const Index = () => {
     return "Complete all of today's exercises to maintain your streak!";
   };
 
+  const handleToggle = async () => {
+    if (!selectedCard || !exercises) return;
+    setExercises!((prev) =>
+      prev!.filter((e) =>
+        e.id === selectedCard.id ? { ...e, completed: !e.completed } : e
+      )
+    );
+    toggle_completed(1, selectedCard.id);
+    setModalVisible(false);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -78,7 +89,9 @@ const Index = () => {
           <View style={styles.streakContainer}>
             <Text style={styles.streakLabel}>Current Streak</Text>
             <View style={styles.streakContent}>
-              <Text style={styles.streakValue}>{user?.currentStreak || 0} days</Text>
+              <Text style={styles.streakValue}>
+                {user?.currentStreak || 0} days
+              </Text>
               {streakActive ? (
                 <FilledFire
                   width={30}
@@ -94,7 +107,11 @@ const Index = () => {
                     style={styles.streakFire}
                     strokeWidth={2}
                   />
-                  <CircleAlert size={12} color="red" style={styles.streakAlert} />
+                  <CircleAlert
+                    size={12}
+                    color="red"
+                    style={styles.streakAlert}
+                  />
                 </View>
               )}
             </View>
@@ -139,6 +156,12 @@ const Index = () => {
           >
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
+                <TouchableOpacity
+                  onPress={() => setModalVisible(false)}
+                  style={styles.closeButton}
+                >
+                  <ArrowLeft size={24} />
+                </TouchableOpacity>
                 <Text style={styles.modalTitle}>{selectedCard.title}</Text>
                 <Text style={styles.modalText}>
                   {selectedCard.instructions}
@@ -152,16 +175,31 @@ const Index = () => {
                       resizeMode="contain"
                     />
                   ) : (
-                    <Text style={styles.noGifText}>No demonstration available</Text>
+                    <Text style={styles.noGifText}>
+                      No demonstration available
+                    </Text>
                   )}
                 </View>
 
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={() => setModalVisible(false)}
-                >
-                  <Text style={styles.closeButtonText}>Close</Text>
-                </TouchableOpacity>
+                {selectedCard.completed === true ? (
+                  <TouchableOpacity
+                    style={{...styles.markDoneButton, backgroundColor: "#ff746c"}}
+                    onPress={() => {
+                      handleToggle();
+                    }}
+                  >
+                    <Text style={styles.closeButtonText}>Mark As Incomplete</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.markDoneButton}
+                    onPress={() => {
+                      handleToggle();
+                    }}
+                  >
+                    <Text style={styles.closeButtonText}>Mark As Done</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           </Modal>
@@ -194,7 +232,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderWidth: 1,
     borderColor: "#A7F3D0",
-    alignItems: 'center',
+    alignItems: "center",
   },
   streakLabel: {
     fontSize: 14,
@@ -202,8 +240,8 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   streakContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   streakValue: {
     fontSize: 32,
@@ -223,7 +261,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#6B7280",
     marginTop: 8,
-    textAlign: 'center',
+    textAlign: "center",
   },
   header: {
     fontSize: 24,
@@ -246,7 +284,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    width: '90%',
+    width: "90%",
     maxWidth: 400,
     padding: 20,
     backgroundColor: "white",
@@ -266,27 +304,36 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   gifContainer: {
-    width: '100%',
+    width: "100%",
     height: 200,
     marginVertical: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   gif: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 8,
   },
   noGifText: {
     fontSize: 16,
-    color: '#6B7280',
-    textAlign: 'center',
+    color: "#6B7280",
+    textAlign: "center",
+  },
+  markDoneButton: {
+    flexDirection: "row",
+    marginTop: 20,
+    paddingVertical: 10,
+    width: "90%",
+    backgroundColor: "#10B981",
+    borderRadius: 5,
+    justifyContent: "center",
   },
   closeButton: {
-    marginTop: 20,
+    position: "absolute",
+    top: 10,
+    left: 10,
     padding: 10,
-    backgroundColor: "#1F2937",
-    borderRadius: 5,
   },
   closeButtonText: {
     color: "white",
