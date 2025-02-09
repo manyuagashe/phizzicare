@@ -1,6 +1,8 @@
 interface Exercise {
   id: number;
-  name: string;
+  title: string;
+  duration: string;
+  intensity: "Easy" | "Medium" | "Hard";
   videoLink: string;
   instructions: string;
   completed: boolean;
