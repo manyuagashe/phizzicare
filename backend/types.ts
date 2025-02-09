@@ -12,6 +12,7 @@ interface User {
   firstName: string;
   lastName: string;
   email: string;
+  username: string;
   height: number;
   weight: number;
   currentStreak: number;

@@ -3,14 +3,39 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { motion } from 'framer-motion';
 import { ExerciseCard } from '@/components/ExerciseCard';
 import { NavigationBar } from '@/components/NavigationBar';
+import { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history } from '@/backend/routes'
+import { User } from '@/backend/types'
+import { useEffect, useState } from 'react';
+
 
 const exercises = [
-  { title: "Morning Yoga", duration: "20 min", intensity: "Easy" as const },
-  { title: "HIIT Workout", duration: "30 min", intensity: "Hard" as const },
-  { title: "Evening Stretch", duration: "15 min", intensity: "Medium" as const },
+  { title: "Loading.", duration: "20 min", intensity: "Easy" },
+  { title: "Loading..", duration: "30 min", intensity: "Hard" },
+  { title: "Loading...", duration: "15 min", intensity: "Medium" },
 ];
 
+async function getUserInfo (userID: number) {
+  try {
+    const response: User = await get_user(userID)
+    console.log(response)
+    return response
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
 const Index = () => {
+  const [CurrentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      const user = await getUserInfo(1);
+      setCurrentUser(user);
+    }
+    fetchUser();
+  }, []);
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -21,23 +46,34 @@ const Index = () => {
         >
           <View style={styles.streakContainer}>
             <Text style={styles.streakLabel}>Current Streak</Text>
-            <Text style={styles.streakValue}>7 Days</Text>
+            <Text style={styles.streakValue}>{CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."} Days</Text>
           </View>
 
           <Text style={styles.header}>Today's Exercises</Text>
-          <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
+          <View style={{ height: 4 }} /> {/* Reduced space below the header */}
+          <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
+
 
           <View style={styles.exerciseList}>
-            {exercises.map((exercise, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <ExerciseCard {...exercise} />
-              </motion.div>
-            ))}
+            { CurrentUser === null ? (
+              <Text>Loading...</Text>
+            ) : (
+              CurrentUser.exercises.map((exercise, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <ExerciseCard 
+                    title={exercise.title} // Map 'name' to 'title'
+                    duration={exercise.duration} // Map 'duration' to 'duration'
+                    intensity={exercise.intensity}
+                  />
+                </motion.div>
+              ))
+            )}
+          
           </View>
         </motion.div>
       </ScrollView>

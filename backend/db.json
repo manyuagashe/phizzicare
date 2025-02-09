@@ -6,6 +6,7 @@
       "firstName": "John",
       "lastName": "Doe",
       "email": "john.doe@example.com",
+      "username": "john.doe",
       "height": 175,
       "weight": 70,
       "currentStreak": 5,
@@ -13,16 +14,29 @@
       "exercises": [
         {
           "id": 1,
-          "name": "Squats",
+          "title": "Squats",
+          "duration": 25,
+          "intensity": "High",
           "videoLink": "",
           "instructions": "Stand with feet a little wider than shoulder-width apart, hips stacked over knees, and knees over ankles.",
           "completed": true
         },
         {
           "id": 2,
-          "name": "Lunges",
+          "title": "Lunges",
+          "duration": 40,
+          "intensity": "Medium",
           "videoLink": "",
           "instructions": "Start by standing up tall. Step forward with one foot until your leg reaches a 90-degree angle.",
+          "completed": false
+        },
+        {
+          "id": 3,
+          "title": "Push-ups",
+          "duration": 10,
+          "intensity": "High",
+          "videoLink": "",
+          "instructions": "Start in a plank position. Lower your body until your chest nearly touches the floor.",
           "completed": false
         }
       ]
@@ -33,6 +47,7 @@
       "lastName": "Smith",
       "image": "https://t4.ftcdn.net/jpg/10/57/03/35/360_F_1057033547_anWbRWhpm6b8mpiM3OuT3RXCxHUOUUwt.webp",
       "email": "jane.smith@example.com",
+      "username": "jane.smith",
       "height": 160,
       "weight": 55,
       "currentStreak": 3,
@@ -40,16 +55,29 @@
       "exercises": [
         {
           "id": 3,
-          "name": "Push-ups",
+          "title": "Push-ups",
+          "duration": 10,
+          "intensity": "High",
           "videoLink": "",
           "instructions": "Start in a plank position. Lower your body until your chest nearly touches the floor.",
           "completed": false
         },
         {
           "id": 4,
-          "name": "Plank",
+          "title": "Plank",
+          "duration": 45,
+          "intensity": "Medium",
           "videoLink": "",
           "instructions": "Lie face down with forearms on the floor and hands clasped. Extend the legs behind the body and rise up on the toes.",
+          "completed": false
+        },
+        {
+          "id": 5,
+          "title": "Ankle Circles",
+          "duration": 30,
+          "intensity": "Small",
+          "videoLink": "",
+          "instructions": "Lean back against a wall and stick one leg out. Rotate slowly both clockwise and counterclockwise at the ankle.", 
           "completed": false
         }
       ]
