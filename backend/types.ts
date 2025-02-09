@@ -1,7 +1,7 @@
 interface Exercise {
   id: number;
   title: string;
-  duration: string;
+  reps: string;
   intensity: "Easy" | "Medium" | "Hard";
   videoLink: string;
   instructions: string;

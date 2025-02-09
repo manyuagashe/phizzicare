@@ -81,7 +81,7 @@ const Index = () => {
                 >
                   <ExerciseCard 
                     title={exercise.title} // Map 'name' to 'title'
-                    reps={exercise.duration} // Map 'duration' to 'duration'
+                    reps={exercise.reps} // Map 'duration' to 'duration'
                     intensity={exercise.intensity}
                   />
                 </motion.div>
