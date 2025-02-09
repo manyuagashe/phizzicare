@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Exercise } from "@/backend/types";
 import { toggle_completed } from "@/backend/routes";
+import { CircleAlert, CircleCheck } from "lucide-react";
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -58,16 +59,15 @@ export const ExerciseCard = ({
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <View style={{ marginRight: 8 }}>
             <TouchableOpacity onPress={handlePress}>
-              {setExercises !== undefined ? exercise.completed 
-              ? (
-                <View style={styles.complete}>
-                  <Text style={styles.checkboxText}>✓</Text>
-                </View>
-              ) : (
-                <View style={styles.incomplete}>
-                  <Text style={styles.checkboxText}>!</Text>
-                </View>
-              ) : null}
+              <View style={styles.status}>
+                {setExercises !== undefined ? (
+                  exercise.completed ? (
+                    <CircleCheck size={24} color="#4ade80" />
+                  ) : (
+                    <CircleAlert size={24} color="#ff4040" />
+                  )
+                ) : null}
+              </View>
             </TouchableOpacity>
           </View>
           <View style={styles.iconContainer}>
@@ -143,30 +143,8 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 24,
   },
-  incomplete: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: "#ff4040",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+  status: {
     transform: [{ translateY: 2 }],
-  },
-  complete: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: "#4ade80",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    transform: [{ translateY: 2 }],
-  },
-  checkboxText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "700",
-    transform: [{ translateY: -1 }],
+    marginRight: 8,
   },
 });

@@ -1,41 +1,55 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Pressable, Modal, TouchableOpacity } from 'react-native';
-import { motion } from 'framer-motion';
-import { ExerciseCard } from '@/components/ExerciseCard';
-import { get_user } from '@/backend/routes';
-import { Exercise, User } from '@/backend/types'
-import { useEffect, useState } from 'react';
-import { Colors } from '@/constants/Colors';
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  Pressable,
+  Modal,
+  TouchableOpacity,
+} from "react-native";
+import { motion } from "framer-motion";
+import { ExerciseCard } from "@/components/ExerciseCard";
+import { get_user } from "@/backend/routes";
+import { Exercise, User } from "@/backend/types";
+import { useEffect, useState } from "react";
+import { Colors } from "@/constants/Colors";
+import useStreak from "@/hooks/useStreak";
 
-async function getUserInfo (userID: number) {
+async function getUserInfo(userID: number) {
   try {
-    const response: User = await get_user(userID)
-    return response
+    const response: User = await get_user(userID);
+    return response;
   } catch (error) {
-    console.error(error)
-    return null
+    console.error(error);
+    return null;
   }
 }
-
 
 const Index = () => {
   const [exercises, setExercises] = useState<Exercise[] | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Exercise | null>(null);
-  const [CurrentUser, setCurrentUser] = useState<User | null>(null);
+  const setStreakActive = useStreak()?.setStreakActive;
 
   useEffect(() => {
-    async function fetchExcersizes() {
+    async function fetchExercises() {
       const user = await getUserInfo(1);
       setExercises(user?.exercises || null);
+      if (setStreakActive) {
+        setStreakActive(
+          user?.exercises.every((exercise) => exercise.completed) ?? false
+        );
+      }
     }
-    fetchExcersizes();
+    fetchExercises();
   }, [exercises]);
 
   const openModel = (card: React.SetStateAction<Exercise | null>) => {
     setModalVisible(true);
     setSelectedCard(card);
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -48,7 +62,7 @@ const Index = () => {
           {/* Actual logo */}
           <View style={styles.logoContainer}>
             <Image
-              source={require('@/assets/images/finallogo.png')} // Update the path to your actual logo file
+              source={require("@/assets/images/finallogo.png")}
               style={styles.logo}
               resizeMode="contain"
             />
@@ -56,12 +70,13 @@ const Index = () => {
 
           <View>
             <Text style={styles.header}>Today's Exercises</Text>
-            <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
+            <Text style={styles.subheader}>
+              Complete these exercises to maintain your streak!
+            </Text>
           </View>
 
-
           <View style={styles.exerciseList}>
-            { exercises === null ? (
+            {exercises === null ? (
               <Text>Loading...</Text>
             ) : (
               exercises.map((exercise, index) => (
@@ -71,39 +86,41 @@ const Index = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                    <ExerciseCard 
-                      exercise={exercise}
-                      setExercises={setExercises}
-                      onClick={() => {
-                        openModel(exercise)
-                      }
-                    }/>
+                  <ExerciseCard
+                    exercise={exercise}
+                    setExercises={setExercises}
+                    onClick={() => {
+                      openModel(exercise);
+                    }}
+                  />
                 </motion.div>
               ))
             )}
           </View>
         </motion.div>
         {selectedCard && (
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-              >
-                <View style={styles.modalContainer}>
-                  <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>{selectedCard.title}</Text>
-                    <Text style={styles.modalText}>{selectedCard.instructions}</Text>
-                    <TouchableOpacity
-                      style={styles.closeButton}
-                      onPress={() => setModalVisible(false)}
-                    >
-                      <Text style={styles.closeButtonText}>Close</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </Modal>
-            )}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>{selectedCard.title}</Text>
+                <Text style={styles.modalText}>
+                  {selectedCard.instructions}
+                </Text>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={styles.closeButtonText}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        )}
       </ScrollView>
     </View>
   );
@@ -145,7 +162,7 @@ const styles = StyleSheet.create({
     color: "#1F2937", // gray-800
   },
   logoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   logo: {
     width: 250, // Increased logo size
@@ -153,13 +170,13 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#1F2937', // gray-800
+    fontWeight: "700",
+    color: "#1F2937", // gray-800
     marginBottom: 4, // Reduced margin below the header
   },
   subheader: {
     fontSize: 14,
-    color: '#6B7280', // gray-500
+    color: "#6B7280", // gray-500
     marginBottom: 12, // Reduced margin below the subheader
   },
   exerciseList: {
@@ -167,37 +184,37 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
     width: 300,
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: '700',
-    color: '#1F2937', // gray-800
+    fontWeight: "700",
+    color: "#1F2937", // gray-800
     marginBottom: 8,
   },
   modalText: {
     fontSize: 16,
-    color: '#1F2937', // gray-800
+    color: "#1F2937", // gray-800
     marginBottom: 16,
   },
   closeButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#1F2937', // gray-800
+    backgroundColor: "#1F2937", // gray-800
     borderRadius: 5,
   },
   closeButtonText: {
-    color: 'white',
-    fontWeight: '700',
+    color: "white",
+    fontWeight: "700",
   },
 });
 

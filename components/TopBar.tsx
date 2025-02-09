@@ -4,10 +4,19 @@ import { get_user } from "@/backend/routes";
 import { useEffect, useState } from "react";
 import { User } from "@/backend/types";
 import { useRouter } from "expo-router";
-import { Colors } from '@/constants/Colors';
+import { Colors } from "@/constants/Colors";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import FilledFire from "@/assets/icons/filled_fire";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import OutlineFire from "@/assets/icons/fire_outline";
+import useStreak from "@/hooks/useStreak";
+import { CircleAlert } from "lucide-react";
 
 export default function TopBar() {
   const [user, setUser] = useState<User | null>(null);
+  const streakActive = useStreak()?.streakActive;
   const router = useRouter();
 
   useEffect(() => {
@@ -20,7 +29,7 @@ export default function TopBar() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => router.push('/profile')}>
+      <TouchableOpacity onPress={() => router.push("/profile")}>
         <Image
           source={{ uri: user?.image }}
           style={{
@@ -32,7 +41,24 @@ export default function TopBar() {
       </TouchableOpacity>
       <View style={styles.streak}>
         <Text style={styles.streakText}>{user?.currentStreak} days</Text>
-        <Text style={styles.fire}>🔥</Text>
+        {streakActive ? (
+          <FilledFire
+            width={23}
+            height={23}
+            style={styles.fire}
+            strokeWidth={2}
+          />
+        ) : (
+            <View>
+            <OutlineFire
+              width={23}
+              height={23}
+              style={styles.fire}
+              strokeWidth={2}
+            />
+            <CircleAlert size={10} color="red" style={styles.alert as any} />
+            </View>
+        )}
       </View>
     </View>
   );
@@ -57,6 +83,11 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   fire: {
-    fontSize: 23,
+    marginLeft: 4,
+  },
+  alert: {
+    position: "absolute",
+    top: -5,
+    left: 20,
   }
 });
