@@ -30,37 +30,44 @@ export default function ProfileView() {
     fetchUser();
   }, []);
 
-
-
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#F0FFF4', dark: '#1D3D47' }}
       headerImage={<Image source={{ uri: 'https://source.unsplash.com/800x600/?water' }} style={{ width: '100%', height: 200 }} />}
     >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedView style={styles.flexCol}>
+      <ThemedView style={styles.container}>
+        <ThemedView style={styles.profileContainer}>
           <ThemedText style={styles.titleText}>
             {CurrentUser ? `${CurrentUser.firstName} ${CurrentUser.lastName}` : "Loading.."}
           </ThemedText>
-          <ThemedText style={styles.infoText}>
-            username: {CurrentUser ? `${CurrentUser.username}` : "Loading.."}
+          <ThemedText style={styles.usernameText}>
+            @{CurrentUser ? `${CurrentUser.username}` : "Loading.."}
           </ThemedText>
-          <ThemedText style={styles.infoText}>
-            email: {CurrentUser ? `${CurrentUser.email}` : "Loading.."}
+          <ThemedText style={styles.emailText}>
+            {CurrentUser ? `${CurrentUser.email}` : "Loading.."}
           </ThemedText>
-          <ThemedText style={styles.infoText}>
-            BioInfo: {CurrentUser ? `
-                height: ${CurrentUser.height}
-                weight: ${CurrentUser.weight}` : "Loading.."}
-          </ThemedText>
+          
+          <ThemedView style={styles.bioContainer}>
+            <ThemedText style={styles.bioLabel}>Bio Info</ThemedText>
+            <ThemedText style={styles.bioText}>
+              {CurrentUser ? `Height: ${CurrentUser.height}\nWeight: ${CurrentUser.weight}` : "Loading.."}
+            </ThemedText>
+          </ThemedView>
 
-          <ThemedView style={styles.flexRow}>
-            <ThemedText style={styles.streakText}>
-              Streak: {CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."}
-            </ThemedText>
-            <ThemedText style={styles.streakText}>
-              Max Streak: {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} 
-            </ThemedText>
+          <ThemedView style={styles.streakContainer}>
+            <ThemedView style={styles.streakBox}>
+              <ThemedText style={styles.streakLabel}>Current Streak</ThemedText>
+              <ThemedText style={styles.streakValue}>
+                {CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."} Days
+              </ThemedText>
+            </ThemedView>
+            
+            <ThemedView style={styles.streakBox}>
+              <ThemedText style={styles.streakLabel}>Best Streak</ThemedText>
+              <ThemedText style={styles.streakValue}>
+                {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} Days
+              </ThemedText>
+            </ThemedView>
           </ThemedView>
         </ThemedView>
       </ThemedView>
@@ -71,43 +78,74 @@ export default function ProfileView() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#F0FFF4',
+    paddingBottom: 20,
   },
-  titleContainer: {
+  profileContainer: {
     padding: 20,
-  },
-  flexCol: {
-    flex: 1,
-    flexDirection: 'column',
+    alignItems: 'center',
   },
   titleText: {
-    color: '#ffffff',
-    textAlign: 'center',
     fontSize: 32,
-    paddingVertical: 36,
+    fontWeight: '700',
+    color: '#1F2937',
+    marginTop: 24,
+    marginBottom: 8,
   },
-  infoText: {
-    paddingVertical: 20,
+  usernameText: {
+    fontSize: 16,
+    color: '#6B7280',
+    marginBottom: 8,
   },
-  flexRow: {
-    flexDirection: 'row',
-    marginTop: 80,
+  emailText: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginBottom: 24,
   },
-  streakText: {
-    flex: 1,
-    textAlign: 'center',
-    borderRadius: 9999,
-    backgroundColor: '#38b2ac',
-    borderColor: '#38b2ac',
+  bioContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 12,
+    padding: 16,
+    width: '100%',
+    marginBottom: 24,
     borderWidth: 1,
-    paddingVertical: 8,
-    marginHorizontal: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 12,
+    borderColor: '#A7F3D0',
+  },
+  bioLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#6B7280',
+    marginBottom: 8,
+  },
+  bioText: {
+    fontSize: 16,
+    color: '#1F2937',
+    lineHeight: 24,
+  },
+  streakContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    gap: 16,
+  },
+  streakBox: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#A7F3D0',
+    alignItems: 'center',
+  },
+  streakLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#6B7280',
+    marginBottom: 4,
+  },
+  streakValue: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1F2937',
   },
 });
-
