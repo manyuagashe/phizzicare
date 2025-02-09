@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, Pressable, Modal, TouchableOpacity } from 'react-native';
 import { motion } from 'framer-motion';
 import { ExerciseCard } from '@/components/ExerciseCard';
 import { NavigationBar } from '@/components/NavigationBar';
 import { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history } from '@/backend/routes'
-import { User } from '@/backend/types'
+import { Exercise, User } from '@/backend/types'
 import { useEffect, useState } from 'react';
+import { Link, router } from 'expo-router';
 
 
 const exercises = [
@@ -25,7 +26,13 @@ async function getUserInfo (userID: number) {
   }
 }
 
+const handleExerciseClick = (exerciseID: number) => {
+  <Link href={`/exercise/${exerciseID}`}></Link>
+}
+
 const Index = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<Exercise | null>(null);
   const [CurrentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -35,6 +42,11 @@ const Index = () => {
     }
     fetchUser();
   }, []);
+
+  const openModel = (card: React.SetStateAction<Exercise | null>) => {
+    setModalVisible(true);
+    setSelectedCard(card);
+  }
 
   return (
     <View style={styles.container}>
@@ -63,8 +75,6 @@ const Index = () => {
           <Text style={styles.header}>Today's Exercises</Text>
           <View style={{ height: 4 }} /> {/* Reduced space below the header */}
 
-          <View style={{ height: 4 }} /> {/* Reduced space below the header */}
-
           <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
 
 
@@ -79,17 +89,45 @@ const Index = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <ExerciseCard 
-                    title={exercise.title} // Map 'name' to 'title'
-                    reps={exercise.reps} // Map 'duration' to 'duration'
-                    intensity={exercise.intensity}
-                  />
+                  {/* <Pressable onPress={() => {
+                    console.log("Pressed")
+                    router.push("/fakeurl")
+                  }}> */}
+                    <ExerciseCard 
+                      id={exercise.id} // Map 'id' to 'id'
+                      title={exercise.title} // Map 'name' to 'title'
+                      reps={exercise.reps} // Map 'duration' to 'duration'
+                      intensity={exercise.intensity}
+                      onClick={() => {
+                        openModel(exercise)
+                      }
+                    }/>
                 </motion.div>
               ))
             )}
-          
           </View>
         </motion.div>
+        {selectedCard && (
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <Text style={styles.modalTitle}>{selectedCard.title}</Text>
+                    <Text style={styles.modalText}>{selectedCard.instructions}</Text>
+                    <TouchableOpacity
+                      style={styles.closeButton}
+                      onPress={() => setModalVisible(false)}
+                    >
+                      <Text style={styles.closeButtonText}>Close</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+            )}
       </ScrollView>
     </View>
   );
@@ -150,6 +188,40 @@ const styles = StyleSheet.create({
   },
   exerciseList: {
     width: '100%',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1F2937', // gray-800
+    marginBottom: 8,
+  },
+  modalText: {
+    fontSize: 16,
+    color: '#1F2937', // gray-800
+    marginBottom: 16,
+  },
+  closeButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#1F2937', // gray-800
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontWeight: '700',
   },
 });
 

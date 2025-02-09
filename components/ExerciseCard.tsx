@@ -1,15 +1,21 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import { motion } from "framer-motion";
+import {Link, router} from 'expo-router';
 
 interface ExerciseCardProps {
+  id?: number;
   title: string;
   reps?: string;
   intensity?: "Easy" | "Medium" | "Hard";
+  videoLink?: string;
+  instructions?: string;
+  completed?: boolean;
+
   onClick?: () => void;
 }
 
-export const ExerciseCard = ({ title, reps = "30 min", intensity = "Medium", onClick }: ExerciseCardProps) => {
+export const ExerciseCard = ({ id, title, reps = "30 min", intensity = "Medium", onClick }: ExerciseCardProps) => {
   return (
     <TouchableOpacity onPress={onClick} style={styles.card}>
       <View style={styles.content}>
