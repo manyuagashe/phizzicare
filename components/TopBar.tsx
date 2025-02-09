@@ -4,6 +4,7 @@ import { get_user } from "@/backend/routes";
 import { useEffect, useState } from "react";
 import { User } from "@/backend/types";
 import { useRouter } from "expo-router";
+import { Colors } from '@/constants/Colors';
 
 export default function TopBar() {
   const [user, setUser] = useState<User | null>(null);
@@ -42,9 +43,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 12,
-    backgroundColor: "#F0FFF4",
+    backgroundColor: Colors.light.surface,
     alignItems: "center",
     borderBottomWidth: 1,
+    borderBottomColor: Colors.light.surfaceBorder,
   },
   streak: {
     flexDirection: "row",

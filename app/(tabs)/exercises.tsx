@@ -41,7 +41,6 @@ const Index = () => {
           </View>
         </motion.div>
       </ScrollView>
-      <NavigationBar />
     </View>
   );
 };
