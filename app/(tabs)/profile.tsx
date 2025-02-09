@@ -1,16 +1,16 @@
-import { Image, StyleSheet, Platform, View, Text, ScrollView } from 'react-native';
-import { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history } from '@/backend/routes'
-import { User } from '@/backend/types'
+import { Image, StyleSheet, View, Text, ScrollView } from 'react-native';
+import { get_user } from '@/backend/routes';
+import { User } from '@/backend/types';
 import { useEffect, useState } from 'react';
 
-async function getUserInfo (userID: number) {
+async function getUserInfo(userID: number) {
   try {
-    const response: User = await get_user(userID)
-    console.log(response)
-    return response
+    const response: User = await get_user(userID);
+    console.log(response);
+    return response;
   } catch (error) {
-    console.error(error)
-    return null
+    console.error(error);
+    return null;
   }
 }
 
@@ -28,10 +28,12 @@ export default function ProfileView() {
   return (
     <View style={styles.mainContainer}>
       <ScrollView>
-        <Image 
-          source={{ uri: CurrentUser?.image || 'https://source.unsplash.com/800x600/?water' }} 
-          style={styles.headerImage} 
-        />
+        <View style={styles.profileImageContainer}>
+          <Image 
+            source={{ uri: CurrentUser?.image || 'https://source.unsplash.com/400x400/?portrait' }} 
+            style={styles.profileImage} 
+          />
+        </View>
         <View style={styles.container}>
           <View style={styles.profileContainer}>
             <Text style={styles.titleText}>
@@ -44,14 +46,32 @@ export default function ProfileView() {
               {CurrentUser ? `${CurrentUser.email}` : "Loading.."}
             </Text>
             
-            <View style={styles.bioContainer}>
+            {/* <View style={styles.bioContainer}>
               <Text style={styles.bioLabel}>Bio Info</Text>
               <Text style={styles.bioText}>
                 {CurrentUser ? `Height: ${CurrentUser.height}\nWeight: ${CurrentUser.weight}` : "Loading.."}
               </Text>
-            </View>
+            </View> */}
 
             <View style={styles.streakContainer}>
+
+            <View style={styles.streakBox}>
+                <Text style={styles.streakLabel}>Height (cms)</Text>
+                <Text style={styles.streakValue}>
+                  {CurrentUser ? `${CurrentUser.height}` : "Loading.."} Days
+                </Text>
+              </View>
+
+              <View style={styles.streakBox}>
+                <Text style={styles.streakLabel}>Weight (kgs)</Text>
+                <Text style={styles.streakValue}>
+                  {CurrentUser ? `${CurrentUser.weight}` : "Loading.."} Days
+                </Text>
+                </View>
+              </View>
+
+              <View style={styles.streakContainer}>
+
               <View style={styles.streakBox}>
                 <Text style={styles.streakLabel}>Current Streak</Text>
                 <Text style={styles.streakValue}>
@@ -65,6 +85,8 @@ export default function ProfileView() {
                   {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} Days
                 </Text>
               </View>
+
+              
             </View>
           </View>
         </View>
@@ -78,9 +100,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F0FFF4',
   },
-  headerImage: {
+  profileImageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center', // Center vertically
+    alignSelf: 'center', // Center horizontally
+    marginTop: 50,
+    marginBottom: 15,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    borderWidth: 5,
+    borderColor: '#A7F3D0',
+    overflow: 'hidden',
+  },
+  profileImage: {
     width: '100%',
-    height: 200,
+    height: '100%',
+    borderRadius: 75,
   },
   container: {
     flex: 1,
@@ -143,6 +179,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#A7F3D0',
     alignItems: 'center',
+
+    marginBottom: 24,
   },
   streakLabel: {
     fontSize: 12,
@@ -156,3 +194,4 @@ const styles = StyleSheet.create({
     color: '#1F2937',
   },
 });
+
