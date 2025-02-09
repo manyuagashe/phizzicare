@@ -1,10 +1,11 @@
-import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { ScrollView, View, Text, StyleSheet, Modal, TouchableOpacity, Image } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { motion } from "framer-motion";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { useEffect, useState } from "react";
 import { Exercise } from "@/backend/types";
 import { get_exercise, get_history } from "@/backend/routes";
+import { ArrowLeft } from "lucide-react";
 
 type PopulatedHistory = {
   [date: string]: Exercise[];
@@ -12,6 +13,8 @@ type PopulatedHistory = {
 
 export default function TabTwoScreen() {
   const [history, setHistory] = useState<PopulatedHistory | null>(null);
+  const [selectedCard, setSelectedCard] = useState<Exercise | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -52,13 +55,54 @@ export default function TabTwoScreen() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: exerciseIndex * 0.1 }}
                     >
-                      <ExerciseCard exercise={exercise} />
+                      <ExerciseCard 
+                      exercise={exercise}
+                      onClick={() => {setSelectedCard(exercise); setModalVisible(true);}}
+                      />
                     </motion.div>
                   ))}
                 </View>
               ))}
           </View>
         </motion.div>
+
+        {selectedCard && (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <TouchableOpacity
+                  onPress={() => setModalVisible(false)}
+                  style={styles.closeButton}
+                >
+                  <ArrowLeft size={24} />
+                </TouchableOpacity>
+                <Text style={styles.modalTitle}>{selectedCard.title}</Text>
+                <Text style={styles.modalText}>
+                  {selectedCard.instructions}
+                </Text>
+
+                <View style={styles.gifContainer}>
+                  {selectedCard.videoLink ? (
+                    <Image
+                      source={{ uri: selectedCard.videoLink }}
+                      style={styles.gif}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <Text style={styles.noGifText}>
+                      No demonstration available
+                    </Text>
+                  )}
+                </View>
+              </View>
+            </View>
+          </Modal>
+        )}
       </ScrollView>
     </View>
   );
@@ -101,5 +145,54 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#1F2937", // gray-800
     marginBottom: 8,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: "90%",
+    maxWidth: 400,
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#1F2937",
+    marginBottom: 8,
+  },
+  modalText: {
+    fontSize: 16,
+    color: "#1F2937",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  gifContainer: {
+    width: "100%",
+    height: 200,
+    marginVertical: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  gif: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 8,
+  },
+  noGifText: {
+    fontSize: 16,
+    color: "#6B7280",
+    textAlign: "center",
+  },
+  closeButton: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    padding: 10,
   },
 });
