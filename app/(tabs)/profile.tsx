@@ -1,9 +1,5 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
+import { Image, StyleSheet, Platform, View, Text } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history } from '@/backend/routes'
 import { User } from '@/backend/types'
 import { useEffect, useState } from 'react';
@@ -31,51 +27,57 @@ export default function ProfileView() {
   }, []);
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#F0FFF4', dark: '#1D3D47' }}
-      headerImage={<Image source={{ uri: 'https://source.unsplash.com/800x600/?water' }} style={{ width: '100%', height: 200 }} />}
-    >
-      <ThemedView style={styles.container}>
-        <ThemedView style={styles.profileContainer}>
-          <ThemedText style={styles.titleText}>
-            {CurrentUser ? `${CurrentUser.firstName} ${CurrentUser.lastName}` : "Loading.."}
-          </ThemedText>
-          <ThemedText style={styles.usernameText}>
-            @{CurrentUser ? `${CurrentUser.username}` : "Loading.."}
-          </ThemedText>
-          <ThemedText style={styles.emailText}>
-            {CurrentUser ? `${CurrentUser.email}` : "Loading.."}
-          </ThemedText>
-          
-          <ThemedView style={styles.bioContainer}>
-            <ThemedText style={styles.bioLabel}>Bio Info</ThemedText>
-            <ThemedText style={styles.bioText}>
-              {CurrentUser ? `Height: ${CurrentUser.height}\nWeight: ${CurrentUser.weight}` : "Loading.."}
-            </ThemedText>
-          </ThemedView>
-
-          <ThemedView style={styles.streakContainer}>
-            <ThemedView style={styles.streakBox}>
-              <ThemedText style={styles.streakLabel}>Current Streak</ThemedText>
-              <ThemedText style={styles.streakValue}>
-                {CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."} Days
-              </ThemedText>
-            </ThemedView>
+    <View style={styles.mainContainer}>
+      <ParallaxScrollView
+        headerBackgroundColor="#F0FFF4"
+        headerImage={<Image source={{ uri: 'https://source.unsplash.com/800x600/?water' }} style={{ width: '100%', height: 200 }} />}
+      >
+        <View style={styles.container}>
+          <View style={styles.profileContainer}>
+            <Text style={styles.titleText}>
+              {CurrentUser ? `${CurrentUser.firstName} ${CurrentUser.lastName}` : "Loading.."}
+            </Text>
+            <Text style={styles.usernameText}>
+              @{CurrentUser ? `${CurrentUser.username}` : "Loading.."}
+            </Text>
+            <Text style={styles.emailText}>
+              {CurrentUser ? `${CurrentUser.email}` : "Loading.."}
+            </Text>
             
-            <ThemedView style={styles.streakBox}>
-              <ThemedText style={styles.streakLabel}>Best Streak</ThemedText>
-              <ThemedText style={styles.streakValue}>
-                {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} Days
-              </ThemedText>
-            </ThemedView>
-          </ThemedView>
-        </ThemedView>
-      </ThemedView>
-    </ParallaxScrollView>
+            <View style={styles.bioContainer}>
+              <Text style={styles.bioLabel}>Bio Info</Text>
+              <Text style={styles.bioText}>
+                {CurrentUser ? `Height: ${CurrentUser.height}\nWeight: ${CurrentUser.weight}` : "Loading.."}
+              </Text>
+            </View>
+
+            <View style={styles.streakContainer}>
+              <View style={styles.streakBox}>
+                <Text style={styles.streakLabel}>Current Streak</Text>
+                <Text style={styles.streakValue}>
+                  {CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."} Days
+                </Text>
+              </View>
+              
+              <View style={styles.streakBox}>
+                <Text style={styles.streakLabel}>Best Streak</Text>
+                <Text style={styles.streakValue}>
+                  {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} Days
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ParallaxScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#F0FFF4',
+  },
   container: {
     flex: 1,
     backgroundColor: '#F0FFF4',
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     padding: 20,
     alignItems: 'center',
+    backgroundColor: '#F0FFF4',
   },
   titleText: {
     fontSize: 32,
