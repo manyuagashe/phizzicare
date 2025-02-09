@@ -1,67 +1,72 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Pressable, Modal, TouchableOpacity } from 'react-native';
 import { motion } from 'framer-motion';
 import { ExerciseCard } from '@/components/ExerciseCard';
 import { get_user } from '@/backend/routes';
-import { Exercise, User } from '@/backend/types'
-import { useEffect, useState } from 'react';
+import { Exercise, User } from '@/backend/types';
 import { Colors } from '@/constants/Colors';
 
-async function getUserInfo (userID: number) {
+async function getUserInfo(userID: number) {
   try {
-    const response: User = await get_user(userID)
-    return response
+    const response: User = await get_user(userID);
+    return response;
   } catch (error) {
-    console.error(error)
-    return null
+    console.error(error);
+    return null;
   }
 }
 
+import { NavigationProp } from '@react-navigation/native';
 
-const Index = () => {
+const Index = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const [exercises, setExercises] = useState<Exercise[] | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Exercise | null>(null);
-  const [CurrentUser, setCurrentUser] = useState<User | null>(null);
+  const [animationKey, setAnimationKey] = useState(0);
 
   useEffect(() => {
-    async function fetchExcersizes() {
+    async function fetchExercises() {
       const user = await getUserInfo(1);
       setExercises(user?.exercises || null);
     }
-    fetchExcersizes();
+    fetchExercises();
   }, [exercises]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setAnimationKey(prev => prev + 1); // Forces re-mounting of animations
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const openModel = (card: React.SetStateAction<Exercise | null>) => {
     setModalVisible(true);
     setSelectedCard(card);
-  }
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <motion.div
+          key={animationKey} // Forces animation to restart when screen is revisited
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           style={styles.motionContainer}
         >
-          {/* Actual logo */}
           <View style={styles.logoContainer}>
             <Image
-              source={require('@/assets/images/finallogo.png')} // Update the path to your actual logo file
+              source={require('@/assets/images/finallogo.png')}
               style={styles.logo}
               resizeMode="contain"
             />
           </View>
 
-          <View>
-            <Text style={styles.header}>Today's Exercises</Text>
-            <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
-          </View>
-
+          <Text style={styles.header}>Today's Exercises</Text>
+          <Text style={styles.subheader}>Complete these exercises to maintain your streak!</Text>
 
           <View style={styles.exerciseList}>
-            { exercises === null ? (
+            {exercises === null ? (
               <Text>Loading...</Text>
             ) : (
               exercises.map((exercise, index) => (
@@ -71,40 +76,39 @@ const Index = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                    <ExerciseCard 
-                      exercise={exercise}
-                      setExercises={setExercises}
-                      onClick={() => {
-                        openModel(exercise)
-                      }
-                    }/>
+                  <ExerciseCard 
+                    exercise={exercise}
+                    setExercises={setExercises}
+                    onClick={() => openModel(exercise)}
+                  />
                 </motion.div>
               ))
             )}
           </View>
         </motion.div>
-        {selectedCard && (
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-              >
-                <View style={styles.modalContainer}>
-                  <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>{selectedCard.title}</Text>
-                    <Text style={styles.modalText}>{selectedCard.instructions}</Text>
-                    <TouchableOpacity
-                      style={styles.closeButton}
-                      onPress={() => setModalVisible(false)}
-                    >
-                      <Text style={styles.closeButtonText}>Close</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </Modal>
-            )}
       </ScrollView>
+
+      {selectedCard && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>{selectedCard.title}</Text>
+              <Text style={styles.modalText}>{selectedCard.instructions}</Text>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 };
@@ -126,41 +130,40 @@ const styles = StyleSheet.create({
   },
   streakContainer: {
     backgroundColor: "rgba(255, 255, 255, 0.5)",
-    backdropFilter: "blur(10px)", // React Native does not support backdrop-blur directly, you may need a library for this effect
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: "#A7F3D0", // mint/10
+    borderColor: "#A7F3D0",
   },
   streakLabel: {
     fontSize: 12,
     fontWeight: "500",
-    color: "#6B7280", // gray-500
+    color: "#6B7280",
     marginBottom: 4,
   },
   streakValue: {
     fontSize: 32,
     fontWeight: "700",
-    color: "#1F2937", // gray-800
+    color: "#1F2937",
   },
   logoContainer: {
     alignItems: 'center',
   },
   logo: {
-    width: 250, // Increased logo size
-    height: 250, // Increased logo size
+    width: 250,
+    height: 250,
   },
   header: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1F2937', // gray-800
-    marginBottom: 4, // Reduced margin below the header
+    color: '#1F2937',
+    marginBottom: 4,
   },
   subheader: {
     fontSize: 14,
-    color: '#6B7280', // gray-500
-    marginBottom: 12, // Reduced margin below the subheader
+    color: '#6B7280',
+    marginBottom: 12,
   },
   exerciseList: {
     width: "100%",
@@ -181,18 +184,18 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#1F2937', // gray-800
+    color: '#1F2937',
     marginBottom: 8,
   },
   modalText: {
     fontSize: 16,
-    color: '#1F2937', // gray-800
+    color: '#1F2937',
     marginBottom: 16,
   },
   closeButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#1F2937', // gray-800
+    backgroundColor: '#1F2937',
     borderRadius: 5,
   },
   closeButtonText: {
