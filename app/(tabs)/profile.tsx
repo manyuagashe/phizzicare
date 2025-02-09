@@ -4,9 +4,34 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-//import { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history } from '@/backend/routes.ts'
+import { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history } from '@/backend/routes'
+import { User } from '@/backend/types'
+import { useEffect, useState } from 'react';
+
+async function getUserInfo (userID: number) {
+  try {
+    const response: User = await get_user(userID)
+    console.log(response)
+    return response
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
 
 export default function ProfileView() {
+  const [CurrentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      const user = await getUserInfo(1);
+      setCurrentUser(user);
+    }
+    fetchUser();
+  }, []);
+
+
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -15,24 +40,26 @@ export default function ProfileView() {
       <ThemedView style={styles.titleContainer}>
         <ThemedView style={styles.flexCol}>
           <ThemedText style={styles.titleText}>
-            Megan Taylor
+            {CurrentUser ? `${CurrentUser.firstName} ${CurrentUser.lastName}` : "Loading.."}
           </ThemedText>
           <ThemedText style={styles.infoText}>
-            username: USE API
+            username: {CurrentUser ? `${CurrentUser.username}` : "Loading.."}
           </ThemedText>
           <ThemedText style={styles.infoText}>
-            email: USE API
+            email: {CurrentUser ? `${CurrentUser.email}` : "Loading.."}
           </ThemedText>
           <ThemedText style={styles.infoText}>
-            BioInfo: USE APi
+            BioInfo: {CurrentUser ? `
+                height: ${CurrentUser.height}
+                weight: ${CurrentUser.weight}` : "Loading.."}
           </ThemedText>
 
           <ThemedView style={styles.flexRow}>
             <ThemedText style={styles.streakText}>
-              Streak: Use API
+              Streak: {CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."}
             </ThemedText>
             <ThemedText style={styles.streakText}>
-              Max Streak: Use 
+              Max Streak: {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} 
             </ThemedText>
           </ThemedView>
         </ThemedView>
@@ -71,5 +98,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingVertical: 8,
     marginHorizontal: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 }, // Increased shadow offset height
+    shadowOpacity: 0.2, // Increased shadow opacity
+    shadowRadius: 12, // Increased shadow radius
   },
 }); 
+
