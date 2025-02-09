@@ -1,8 +1,8 @@
-import { Image, StyleSheet, View, Text, ScrollView } from 'react-native';
-import { get_user } from '@/backend/routes';
-import { User } from '@/backend/types';
-import { useEffect, useState } from 'react';
-import { ProgressBar } from 'react-native-paper';
+import { Image, StyleSheet, View, Text, ScrollView } from "react-native";
+import { get_user } from "@/backend/routes";
+import { User } from "@/backend/types";
+import { useEffect, useState } from "react";
+import { ProgressBar } from "react-native-paper";
 
 async function getUserInfo(userID: number) {
   try {
@@ -30,15 +30,21 @@ export default function ProfileView() {
     <View style={styles.mainContainer}>
       <ScrollView>
         <View style={styles.profileImageContainer}>
-          <Image 
-            source={{ uri: CurrentUser?.image || 'https://source.unsplash.com/400x400/?portrait' }} 
-            style={styles.profileImage} 
+          <Image
+            source={{
+              uri:
+                CurrentUser?.image ||
+                "https://source.unsplash.com/400x400/?portrait",
+            }}
+            style={styles.profileImage}
           />
         </View>
         <View style={styles.container}>
           <View style={styles.profileContainer}>
             <Text style={styles.titleText}>
-              {CurrentUser ? `${CurrentUser.firstName} ${CurrentUser.lastName}` : "Loading.."}
+              {CurrentUser
+                ? `${CurrentUser.firstName} ${CurrentUser.lastName}`
+                : "Loading.."}
             </Text>
             <Text style={styles.usernameText}>
               @{CurrentUser ? `${CurrentUser.username}` : "Loading.."}
@@ -46,7 +52,7 @@ export default function ProfileView() {
             <Text style={styles.emailText}>
               {CurrentUser ? `${CurrentUser.email}` : "Loading.."}
             </Text>
-            
+
             {/* <View style={styles.bioContainer}>
               <Text style={styles.bioLabel}>Bio Info</Text>
               <Text style={styles.bioText}>
@@ -55,8 +61,7 @@ export default function ProfileView() {
             </View> */}
 
             <View style={styles.streakContainer}>
-
-            <View style={styles.streakBox}>
+              <View style={styles.streakBox}>
                 <Text style={styles.streakLabel}>Height (cms)</Text>
                 <Text style={styles.streakValue}>
                   {CurrentUser ? `${CurrentUser.height}` : "Loading.."} Days
@@ -68,65 +73,78 @@ export default function ProfileView() {
                 <Text style={styles.streakValue}>
                   {CurrentUser ? `${CurrentUser.weight}` : "Loading.."} Days
                 </Text>
-                </View>
               </View>
+            </View>
 
-              <View style={styles.streakContainer}>
-
+            <View style={styles.streakContainer}>
               <View style={styles.streakBox}>
                 <Text style={styles.streakLabel}>Current Streak</Text>
                 <Text style={styles.streakValue}>
-                  {CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."} Days
+                  {CurrentUser ? `${CurrentUser.currentStreak}` : "Loading.."}{" "}
+                  Days
                 </Text>
               </View>
-              
+
               <View style={styles.streakBox}>
                 <Text style={styles.streakLabel}>Best Streak</Text>
                 <Text style={styles.streakValue}>
-                  {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} Days
+                  {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."}{" "}
+                  Days
                 </Text>
               </View>
-               </View>
+            </View>
 
-  {/* New Progress Box for Therapy Progress */}
-  <View style={[styles.streakBox, styles.progressBox]}>
+            {/* New Progress Box for Therapy Progress */}
+            <View style={[styles.streakBox, styles.progressBox]}>
               <Text style={styles.streakLabel}>Recovery Progress</Text>
 
               {/* Progress Bar Container */}
-              <View style={{ position: 'relative', width: '100%', height: 20, marginTop: 8 }}>
+              <View
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: 20,
+                  marginTop: 8,
+                }}
+              >
                 {/* Progress Bar Background */}
-                <View style={{ width: '100%', height: 10, backgroundColor: '#D1FAE5', borderRadius: 5, overflow: 'hidden' }}>
+                <View
+                  style={{
+                    width: "100%",
+                    height: 10,
+                    backgroundColor: "#D1FAE5",
+                    borderRadius: 5,
+                    overflow: "hidden",
+                  }}
+                >
                   {/* Filled Progress */}
-                  <View style={{ width: `${(5 / 12) * 100}%`, height: '100%', backgroundColor: '#10B981' }} />
+                  <View
+                    style={{
+                      width: `${(5 / 12) * 100}%`,
+                      height: "100%",
+                      backgroundColor: "#10B981",
+                    }}
+                  />
                 </View>
 
                 {/* Smiley Face Indicator */}
-                <Text 
+                <Text
                   style={{
-                    position: 'absolute',
+                    position: "absolute",
                     top: -5, // Adjust to center vertically
                     left: `${(5 / 12) * 100}%`, // Moves based on progress
-                    transform: [{ translateX: -10 }], // Center the emoji
-                    fontSize: 18
+                    transform: [{ translateX: -10 }, {translateY: -3}], // Center the emoji
+                    fontSize: 18,
                   }}
                 >
                   😊
                 </Text>
               </View>
 
-              <Text style={{ fontSize: 14, color: '#1F2937', marginTop: 4 }}>
+              <Text style={{ fontSize: 14, color: "#1F2937", marginTop: 4 }}>
                 5 / 12 months completed
               </Text>
             </View>
-
-
-
-
-
-
-            
-
-
           </View>
         </View>
       </ScrollView>
@@ -137,104 +155,103 @@ export default function ProfileView() {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#F0FFF4',
+    backgroundColor: "#F0FFF4",
   },
   profileImageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center', // Center vertically
-    alignSelf: 'center', // Center horizontally
+    alignItems: "center",
+    justifyContent: "center", // Center vertically
+    alignSelf: "center", // Center horizontally
     marginTop: 50,
     marginBottom: 15,
     width: 150,
     height: 150,
     borderRadius: 75,
     borderWidth: 5,
-    borderColor: '#A7F3D0',
-    overflow: 'hidden',
+    borderColor: "#A7F3D0",
+    overflow: "hidden",
   },
   profileImage: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 75,
   },
   container: {
     flex: 1,
-    backgroundColor: '#F0FFF4',
+    backgroundColor: "#F0FFF4",
     paddingBottom: 20,
   },
   profileContainer: {
     padding: 20,
-    alignItems: 'center',
-    backgroundColor: '#F0FFF4',
+    alignItems: "center",
+    backgroundColor: "#F0FFF4",
   },
   titleText: {
     fontSize: 32,
-    fontWeight: '700',
-    color: '#1F2937',
+    fontWeight: "700",
+    color: "#1F2937",
     marginTop: 24,
     marginBottom: 8,
   },
   usernameText: {
     fontSize: 16,
-    color: '#6B7280',
+    color: "#6B7280",
     marginBottom: 8,
   },
   emailText: {
     fontSize: 14,
-    color: '#6B7280',
+    color: "#6B7280",
     marginBottom: 24,
   },
   bioContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
     borderRadius: 12,
     padding: 16,
-    width: '100%',
+    width: "100%",
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
+    borderColor: "#A7F3D0",
   },
   bioLabel: {
     fontSize: 14,
-    fontWeight: '500',
-    color: '#6B7280',
+    fontWeight: "500",
+    color: "#6B7280",
     marginBottom: 8,
   },
   bioText: {
     fontSize: 16,
-    color: '#1F2937',
+    color: "#1F2937",
     lineHeight: 24,
   },
   streakContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
     gap: 16,
   },
   streakBox: {
     flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
-    alignItems: 'center',
+    borderColor: "#A7F3D0",
+    alignItems: "center",
 
     marginBottom: 24,
   },
   progressBox: {
-    width: '100%',
+    width: "100%",
     marginTop: 16,
   },
   streakLabel: {
     fontSize: 12,
-    fontWeight: '500',
-    color: '#6B7280',
+    fontWeight: "500",
+    color: "#6B7280",
     marginBottom: 4,
   },
   streakValue: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#1F2937',
+    fontWeight: "700",
+    color: "#1F2937",
   },
 });
-
