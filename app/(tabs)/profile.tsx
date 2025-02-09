@@ -60,16 +60,16 @@ export default function ProfileView() {
 
             <View style={styles.streakContainer}>
               <View style={styles.streakBox}>
-                <Text style={styles.streakLabel}>Height (cms)</Text>
+                <Text style={styles.streakLabel}>Height</Text> cms
                 <Text style={styles.streakValue}>
-                  {CurrentUser ? `${CurrentUser.height}` : "Loading.."} Days
+                  {CurrentUser ? `${CurrentUser.height}` : "Loading.."}
                 </Text>
               </View>
 
               <View style={styles.streakBox}>
-                <Text style={styles.streakLabel}>Weight (kgs)</Text>
+                <Text style={styles.streakLabel}>Weight</Text>
                 <Text style={styles.streakValue}>
-                  {CurrentUser ? `${CurrentUser.weight}` : "Loading.."} Days
+                  {CurrentUser ? `${CurrentUser.weight}` : "Loading.."} kgs
                 </Text>
               </View>
             </View>
