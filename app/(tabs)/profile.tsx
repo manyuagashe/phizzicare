@@ -69,6 +69,12 @@ export default function ProfileView() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   titleContainer: {
     padding: 20,
   },
@@ -99,9 +105,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     marginHorizontal: 4,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 }, // Increased shadow offset height
-    shadowOpacity: 0.2, // Increased shadow opacity
-    shadowRadius: 12, // Increased shadow radius
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
   },
-}); 
+});
 
