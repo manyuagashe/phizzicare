@@ -2,6 +2,7 @@ import { Image, StyleSheet, View, Text, ScrollView } from 'react-native';
 import { get_user } from '@/backend/routes';
 import { User } from '@/backend/types';
 import { useEffect, useState } from 'react';
+import { ProgressBar } from 'react-native-paper';
 
 async function getUserInfo(userID: number) {
   try {
@@ -85,9 +86,35 @@ export default function ProfileView() {
                   {CurrentUser ? `${CurrentUser.longestStreak}` : "Loading.."} Days
                 </Text>
               </View>
+               </View>
 
-              
-            </View>
+
+
+
+               <View style={styles.streakBox}>
+    <Text style={styles.streakLabel}>Recovery Progress</Text>
+    
+    <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%', gap: 8, marginTop: 8 }}>
+      <View style={{ flex: 1, height: 10, backgroundColor: '#D1FAE5', borderRadius: 5, overflow: 'hidden' }}>
+        <View style={{ width: `${(5 / 12) * 100}%`, height: '100%', backgroundColor: '#10B981' }} />
+      </View>
+      <Text style={{ fontSize: 18 }}>{'😊'}</Text> {/* Smiley Face */}
+    </View>
+
+    <Text style={{ fontSize: 14, color: '#1F2937', marginTop: 4 }}>
+      5 / 12 months completed
+    </Text>
+  </View>
+
+
+
+
+
+
+
+            
+
+
           </View>
         </View>
       </ScrollView>
