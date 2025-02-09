@@ -1,5 +1,4 @@
-import { Image, StyleSheet, Platform, View, Text } from 'react-native';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { Image, StyleSheet, Platform, View, Text, ScrollView } from 'react-native';
 import { get_users, get_user, add_user, get_exercises, get_exercise, mark_completed, get_history } from '@/backend/routes'
 import { User } from '@/backend/types'
 import { useEffect, useState } from 'react';
@@ -28,10 +27,11 @@ export default function ProfileView() {
 
   return (
     <View style={styles.mainContainer}>
-      <ParallaxScrollView
-        headerBackgroundColor="#F0FFF4"
-        headerImage={<Image source={{ uri: 'https://source.unsplash.com/800x600/?water' }} style={{ width: '100%', height: 200 }} />}
-      >
+      <ScrollView>
+        <Image 
+          source={{ uri: CurrentUser?.image || 'https://source.unsplash.com/800x600/?water' }} 
+          style={styles.headerImage} 
+        />
         <View style={styles.container}>
           <View style={styles.profileContainer}>
             <Text style={styles.titleText}>
@@ -68,7 +68,7 @@ export default function ProfileView() {
             </View>
           </View>
         </View>
-      </ParallaxScrollView>
+      </ScrollView>
     </View>
   );
 }
@@ -77,6 +77,10 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: '#F0FFF4',
+  },
+  headerImage: {
+    width: '100%',
+    height: 200,
   },
   container: {
     flex: 1,
