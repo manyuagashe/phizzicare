@@ -1,6 +1,10 @@
-# Welcome to your Expo app 👋
+# Thank you for looking at our HackDuke 2025 project!
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+#### Contributors: 
+##### Nicolas Asanov, BS CS+Stat+InfoSci '26 UNC
+##### Abhimanyu Agashe BS Stat+CS+Ethics '26 UNC
+##### Vidur Shah BS CS+Astrophysics '27 UNC
+##### Arya Venkatesan BS CS+Business '26 UNC
 
 ## Get started
 
